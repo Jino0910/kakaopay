@@ -16,6 +16,7 @@
 		613A474B22F866C200455029 /* DarkSkyWeatherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A474A22F866C200455029 /* DarkSkyWeatherTests.swift */; };
 		613A475A22F86B6E00455029 /* MapKitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A475922F86B6E00455029 /* MapKitVC.swift */; };
 		613A475C22F86FF200455029 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A475B22F86FF200455029 /* LocationManager.swift */; };
+		61FED5C622F89555001FBB60 /* LocationSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FED5C522F89555001FBB60 /* LocationSearchTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,7 @@
 		613A474C22F866C200455029 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		613A475922F86B6E00455029 /* MapKitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitVC.swift; sourceTree = "<group>"; };
 		613A475B22F86FF200455029 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		61FED5C522F89555001FBB60 /* LocationSearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,10 +85,12 @@
 		613A473122F866C000455029 /* DarkSkyWeather */ = {
 			isa = PBXGroup;
 			children = (
+				61FED5C722F89668001FBB60 /* Extension */,
 				613A473222F866C000455029 /* AppDelegate.swift */,
 				613A473422F866C000455029 /* ViewController.swift */,
 				613A475B22F86FF200455029 /* LocationManager.swift */,
 				613A475922F86B6E00455029 /* MapKitVC.swift */,
+				61FED5C522F89555001FBB60 /* LocationSearchTableViewController.swift */,
 				613A473622F866C000455029 /* Main.storyboard */,
 				613A473C22F866C200455029 /* Assets.xcassets */,
 				613A473E22F866C200455029 /* LaunchScreen.storyboard */,
@@ -103,6 +107,13 @@
 				613A474C22F866C200455029 /* Info.plist */,
 			);
 			path = DarkSkyWeatherTests;
+			sourceTree = "<group>";
+		};
+		61FED5C722F89668001FBB60 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -210,6 +221,7 @@
 				613A473522F866C000455029 /* ViewController.swift in Sources */,
 				613A475C22F86FF200455029 /* LocationManager.swift in Sources */,
 				613A473322F866C000455029 /* AppDelegate.swift in Sources */,
+				61FED5C622F89555001FBB60 /* LocationSearchTableViewController.swift in Sources */,
 				613A473B22F866C000455029 /* DarkSkyWeather.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

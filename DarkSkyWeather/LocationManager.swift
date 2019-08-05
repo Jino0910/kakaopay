@@ -11,10 +11,16 @@ import MapKit
 
 class LocationManager: NSObject {
     
+    static let shared = LocationManager()
+    
+    weak var locationDelegate: LocationProtocol?
     let locationManager = CLLocationManager()
     
-    func getCurrentLocation() {
+    func getCurrentLocation(target: LocationProtocol? = nil) {
         
+        if let target = target {
+            locationDelegate = target
+        }
         
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -25,7 +31,7 @@ class LocationManager: NSObject {
 
 extension LocationManager: CLLocationManagerDelegate {
    
-    private func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    internal func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
             locationManager.requestLocation()
         }
@@ -33,11 +39,13 @@ extension LocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
-            print("location = \(location)")
+//            print("location = \(location)")
+            locationDelegate?.updateLocation(location: location)
+            locationManager.stopUpdatingLocation()
         }
     }
     
-    private func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    internal func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error:: \(error)")
     }
 }

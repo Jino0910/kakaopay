@@ -9,39 +9,39 @@
 import UIKit
 import MapKit
 
-class MapKitVC: UIViewController {
-    
-    let locationManager = CLLocationManager()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.requestLocation()
-        
-//        let location = LocationManager()
-//        location.getCurrentLocation()
-    }
-
+protocol LocationProtocol: class {
+    func updateLocation(location:CLLocation)
 }
 
-extension MapKitVC: CLLocationManagerDelegate {
+class MapKitVC: UIViewController {
     
-    private func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if status == .authorizedWhenInUse {
-            locationManager.requestLocation()
-        }
+    var searchController: UISearchController!
+    let searchTableVC = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "LocationSearchTableViewController") as! LocationSearchTableViewController
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        LocationManager.shared.getCurrentLocation(target: self)
+        
+        
+        searchController = UISearchController(searchResultsController: searchTableVC)
+        searchController.searchResultsUpdater = searchTableVC
+        
+        let searchBar = searchController!.searchBar
+        searchBar.sizeToFit()
+        searchBar.placeholder = "Search for places"
+
+        navigationItem.titleView = searchController?.searchBar
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = true
+        definesPresentationContext = true
     }
+}
+
+extension MapKitVC: LocationProtocol {
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.first {
-            print("location = \(location)")
-        }
-    }
-    
-    private func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        print("error:: \(error)")
+    func updateLocation(location:CLLocation) {
+        print("location = \(location.coordinate.latitude), \(location.coordinate.longitude)")
+        searchTableVC.location = location
     }
 }
