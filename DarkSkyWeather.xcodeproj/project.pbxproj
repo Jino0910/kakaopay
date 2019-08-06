@@ -16,6 +16,7 @@
 		613A474B22F866C200455029 /* DarkSkyWeatherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A474A22F866C200455029 /* DarkSkyWeatherTests.swift */; };
 		613A475A22F86B6E00455029 /* MapKitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A475922F86B6E00455029 /* MapKitVC.swift */; };
 		613A475C22F86FF200455029 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A475B22F86FF200455029 /* LocationManager.swift */; };
+		613A475E22F94DBB00455029 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A475D22F94DBB00455029 /* String+Extension.swift */; };
 		61FED5C622F89555001FBB60 /* LocationSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FED5C522F89555001FBB60 /* LocationSearchTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		613A474C22F866C200455029 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		613A475922F86B6E00455029 /* MapKitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitVC.swift; sourceTree = "<group>"; };
 		613A475B22F86FF200455029 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		613A475D22F94DBB00455029 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "String+Extension.swift"; path = "DarkSkyWeather/String+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		61FED5C522F89555001FBB60 /* LocationSearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,6 +114,7 @@
 		61FED5C722F89668001FBB60 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				613A475D22F94DBB00455029 /* String+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				613A475A22F86B6E00455029 /* MapKitVC.swift in Sources */,
+				613A475E22F94DBB00455029 /* String+Extension.swift in Sources */,
 				613A473522F866C000455029 /* ViewController.swift in Sources */,
 				613A475C22F86FF200455029 /* LocationManager.swift in Sources */,
 				613A473322F866C000455029 /* AppDelegate.swift in Sources */,

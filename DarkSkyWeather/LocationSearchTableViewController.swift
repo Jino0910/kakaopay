@@ -44,6 +44,11 @@ class LocationSearchTableViewController: UITableViewController {
             selectedItem.administrativeArea ?? ""
         )
         
+        if let location = location {
+            let point = CLLocation(latitude: selectedItem.coordinate.latitude, longitude: selectedItem.coordinate.longitude)
+            return String(format: "%@ %0.2fkm", addressLine, point.distance(from: location)/1000)
+        }
+        
         return addressLine
     }
     
@@ -52,21 +57,38 @@ class LocationSearchTableViewController: UITableViewController {
 extension LocationSearchTableViewController : UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-        guard let location = location, let searchBarText = searchController.searchBar.text else { return }
+        guard let location = location, let searchBarText = searchController.searchBar.text, !searchBarText.isEmpty else { return }
+        
+        print(searchBarText)
         
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = searchBarText
         
-        let span = MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10)
+        /*
+         MAX ZOOM:
+         MKCoordinateSpan(latitudeDelta: 135.68020269231502, longitudeDelta: 131.8359359933973)
+         MIN ZOOM:
+         MKCoordinateSpan(latitudeDelta: 0.00033266201122472694, longitudeDelta: 0.00059856596270435602)
+         */
+        
+        let span = MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10) // One degree is always approximately 111 kilometers (69 miles).
         let region = MKCoordinateRegion(center: location.coordinate, span: span)
         request.region = region
         let search = MKLocalSearch(request: request)
         
-        search.start { response, _ in
-            guard let response = response else {
-                return
-            }
-            self.matchingItems = response.mapItems
+        search.start { response, error in
+            
+            print("error = \(error)")
+            
+            guard let response = response else { return }
+            
+            self.matchingItems = response.mapItems.sorted(by: { (mkMapItem1, mkMapItem2) -> Bool in
+                let pointA = CLLocation(latitude: mkMapItem1.placemark.coordinate.latitude, longitude: mkMapItem1.placemark.coordinate.longitude)
+                let pointB = CLLocation(latitude: mkMapItem2.placemark.coordinate.latitude, longitude: mkMapItem2.placemark.coordinate.longitude)
+                
+                return pointA.distance(from: location) < pointB.distance(from: location)
+            })
+
             self.tableView.reloadData()
         }
     }
@@ -82,6 +104,7 @@ extension LocationSearchTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
         let selectedItem = matchingItems[indexPath.row].placemark
+ 
         cell.textLabel?.text = selectedItem.name
         cell.detailTextLabel?.text = parseAddress(selectedItem: selectedItem)
         return cell
