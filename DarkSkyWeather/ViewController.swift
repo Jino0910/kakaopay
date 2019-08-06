@@ -7,14 +7,28 @@
 //
 
 import UIKit
+import CoreData
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, SearchProtocol {
+    
+    let searchManager = SearchManager.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        searchManager.searchDelegate = self
+        searchManager.getSearchPlace()
     }
+}
 
-
+extension ViewController {
+    
+    func recentData(place: Place) {
+        print(place.keyword ?? "")
+    }
+    
+    func noSearchData() {
+        
+    }
 }
 
