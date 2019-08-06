@@ -7,12 +7,28 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class ViewController: UIViewController {
+    
+    let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        if let key = Bundle.main.infoDictionary?["DarkSkySecretKey"] as? String {
+            
+            APIManager.request(target: .searchDarkSkyWeather(key: key, langtitude: 37.39490845464246, longitude: 127.11122860442993))
+                .filter{$0.code == .code200}
+                .subscribe(onSuccess: { (code, json) in
+                    
+                    let model = DarkSkyWeatherModel(data: json)
+                    
+                    print(model)
+                })
+                .disposed(by: disposeBag)
+        }
     }
 
 

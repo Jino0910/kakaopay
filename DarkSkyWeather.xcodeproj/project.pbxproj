@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,9 @@
 		613A473D22F866C200455029 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 613A473C22F866C200455029 /* Assets.xcassets */; };
 		613A474022F866C200455029 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 613A473E22F866C200455029 /* LaunchScreen.storyboard */; };
 		613A474B22F866C200455029 /* DarkSkyWeatherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A474A22F866C200455029 /* DarkSkyWeatherTests.swift */; };
+		613A478A22F9B2C600455029 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A478922F9B2C600455029 /* APIManager.swift */; };
+		613A478C22F9B2FD00455029 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A478B22F9B2FD00455029 /* API.swift */; };
+		613A478E22F9C0FC00455029 /* DarkSkyWeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A478D22F9C0FC00455029 /* DarkSkyWeatherModel.swift */; };
 		65F66DE0091FB3D4CC023407 /* Pods_DarkSkyWeather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880ADC722A33723425273861 /* Pods_DarkSkyWeather.framework */; };
 		798736044B522277508DA916 /* Pods_DarkSkyWeatherTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C97581E96E3728D8F669AB /* Pods_DarkSkyWeatherTests.framework */; };
 /* End PBXBuildFile section */
@@ -43,6 +46,9 @@
 		613A474622F866C200455029 /* DarkSkyWeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DarkSkyWeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		613A474A22F866C200455029 /* DarkSkyWeatherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkSkyWeatherTests.swift; sourceTree = "<group>"; };
 		613A474C22F866C200455029 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		613A478922F9B2C600455029 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		613A478B22F9B2FD00455029 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		613A478D22F9C0FC00455029 /* DarkSkyWeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkSkyWeatherModel.swift; sourceTree = "<group>"; };
 		810E1F0EE3192264942DBAFC /* Pods-DarkSkyWeatherTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DarkSkyWeatherTests.release.xcconfig"; path = "Target Support Files/Pods-DarkSkyWeatherTests/Pods-DarkSkyWeatherTests.release.xcconfig"; sourceTree = "<group>"; };
 		880ADC722A33723425273861 /* Pods_DarkSkyWeather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DarkSkyWeather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F452C3526255ADE2652BF441 /* Pods-DarkSkyWeather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DarkSkyWeather.debug.xcconfig"; path = "Target Support Files/Pods-DarkSkyWeather/Pods-DarkSkyWeather.debug.xcconfig"; sourceTree = "<group>"; };
@@ -76,7 +82,6 @@
 				5B79B554F5099BB3C7047FD6 /* Pods-DarkSkyWeatherTests.debug.xcconfig */,
 				810E1F0EE3192264942DBAFC /* Pods-DarkSkyWeatherTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -105,6 +110,8 @@
 			children = (
 				613A473222F866C000455029 /* AppDelegate.swift */,
 				613A473422F866C000455029 /* ViewController.swift */,
+				613A478F22F9C10000455029 /* Model */,
+				613A478822F9B2B000455029 /* Manager */,
 				613A473622F866C000455029 /* Main.storyboard */,
 				613A473C22F866C200455029 /* Assets.xcassets */,
 				613A473E22F866C200455029 /* LaunchScreen.storyboard */,
@@ -121,6 +128,23 @@
 				613A474C22F866C200455029 /* Info.plist */,
 			);
 			path = DarkSkyWeatherTests;
+			sourceTree = "<group>";
+		};
+		613A478822F9B2B000455029 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				613A478922F9B2C600455029 /* APIManager.swift */,
+				613A478B22F9B2FD00455029 /* API.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		613A478F22F9C10000455029 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				613A478D22F9C0FC00455029 /* DarkSkyWeatherModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		E2A2680B1FC10673DBD83568 /* Frameworks */ = {
@@ -300,9 +324,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				613A478A22F9B2C600455029 /* APIManager.swift in Sources */,
 				613A473522F866C000455029 /* ViewController.swift in Sources */,
+				613A478E22F9C0FC00455029 /* DarkSkyWeatherModel.swift in Sources */,
 				613A473322F866C000455029 /* AppDelegate.swift in Sources */,
 				613A473B22F866C000455029 /* DarkSkyWeather.xcdatamodeld in Sources */,
+				613A478C22F9B2FD00455029 /* API.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
