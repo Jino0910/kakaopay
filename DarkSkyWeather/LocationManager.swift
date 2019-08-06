@@ -9,12 +9,17 @@
 import Foundation
 import MapKit
 
+protocol LocationProtocol: class {
+    func updateLocation(location:CLLocation)
+}
+
 class LocationManager: NSObject {
     
     static let shared = LocationManager()
     
     weak var locationDelegate: LocationProtocol?
     let locationManager = CLLocationManager()
+    var currentLocation: CLLocation?
     
     func getCurrentLocation(target: LocationProtocol? = nil) {
         
@@ -25,7 +30,7 @@ class LocationManager: NSObject {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-        locationManager.requestLocation()
+        locationManager.startUpdatingLocation()
     }
 }
 
@@ -33,14 +38,19 @@ extension LocationManager: CLLocationManagerDelegate {
    
     internal func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
-            locationManager.requestLocation()
+//            locationManager.requestLocation()
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.first {
-//            print("location = \(location)")
+        
+        let location = locations.sorted { $0.horizontalAccuracy < $1.horizontalAccuracy }.first
+        
+        if let location = location, fabs(location.timestamp.timeIntervalSinceNow) < 5.0 {
+//            print("location = \(locations)")
+            currentLocation = location
             locationDelegate?.updateLocation(location: location)
+            locationManager.stopMonitoringSignificantLocationChanges()
             locationManager.stopUpdatingLocation()
         }
     }

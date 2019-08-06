@@ -21,7 +21,7 @@ class LocationSearchTableViewController: UITableViewController {
         let firstSpace = (selectedItem.subThoroughfare != nil &&
             selectedItem.thoroughfare != nil) ? " " : ""
         
-        // put a comma between street and city/state
+        // put a comma between street and city/state "274-5", "영화동", "", "경기도"
         let comma = (selectedItem.subThoroughfare != nil || selectedItem.thoroughfare != nil) &&
             (selectedItem.subAdministrativeArea != nil || selectedItem.administrativeArea != nil) ? ", " : ""
         
@@ -31,16 +31,16 @@ class LocationSearchTableViewController: UITableViewController {
         
         let addressLine = String(
             format:"%@%@%@%@%@%@%@",
-            // street number
+            // street number "274-5"
             selectedItem.subThoroughfare ?? "",
             firstSpace,
-            // street name
+            // street name "영화동"
             selectedItem.thoroughfare ?? "",
             comma,
-            // city
+            // city "수원시"
             selectedItem.locality ?? "",
             secondSpace,
-            // state
+            // state "경기도"
             selectedItem.administrativeArea ?? ""
         )
         
@@ -50,16 +50,15 @@ class LocationSearchTableViewController: UITableViewController {
 }
 
 extension LocationSearchTableViewController : UISearchResultsUpdating {
+    
     func updateSearchResults(for searchController: UISearchController) {
-        guard let l = location,
-            let searchBarText = searchController.searchBar.text else { return }
+        guard let location = location, let searchBarText = searchController.searchBar.text else { return }
         
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = searchBarText
         
         let span = MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10)
-        let location = CLLocationCoordinate2D(latitude: l.coordinate.latitude, longitude: l.coordinate.longitude)
-        let region = MKCoordinateRegion(center: location, span: span)
+        let region = MKCoordinateRegion(center: location.coordinate, span: span)
         request.region = region
         let search = MKLocalSearch(request: request)
         
@@ -93,7 +92,7 @@ extension LocationSearchTableViewController {
 extension LocationSearchTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let selectedItem = matchingItems[indexPath.row].placemark
+        let selectedItem = matchingItems[indexPath.row].placemark
 //        handleMapSearchDelegate?.dropPinZoomIn(selectedItem)
         dismiss(animated: true, completion: nil)
     }

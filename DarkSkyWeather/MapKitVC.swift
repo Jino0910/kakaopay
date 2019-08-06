@@ -9,11 +9,7 @@
 import UIKit
 import MapKit
 
-protocol LocationProtocol: class {
-    func updateLocation(location:CLLocation)
-}
-
-class MapKitVC: UIViewController {
+class MapKitVC: UIViewController, LocationProtocol {
     
     var searchController: UISearchController!
     let searchTableVC = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "LocationSearchTableViewController") as! LocationSearchTableViewController
@@ -23,10 +19,9 @@ class MapKitVC: UIViewController {
 
         LocationManager.shared.getCurrentLocation(target: self)
         
-        
         searchController = UISearchController(searchResultsController: searchTableVC)
         searchController.searchResultsUpdater = searchTableVC
-        
+
         let searchBar = searchController!.searchBar
         searchBar.sizeToFit()
         searchBar.placeholder = "Search for places"
@@ -38,7 +33,7 @@ class MapKitVC: UIViewController {
     }
 }
 
-extension MapKitVC: LocationProtocol {
+extension MapKitVC {
     
     func updateLocation(location:CLLocation) {
         print("location = \(location.coordinate.latitude), \(location.coordinate.longitude)")
