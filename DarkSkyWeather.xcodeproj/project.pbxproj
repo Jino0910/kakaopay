@@ -14,6 +14,8 @@
 		613A473D22F866C200455029 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 613A473C22F866C200455029 /* Assets.xcassets */; };
 		613A474022F866C200455029 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 613A473E22F866C200455029 /* LaunchScreen.storyboard */; };
 		613A474B22F866C200455029 /* DarkSkyWeatherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A474A22F866C200455029 /* DarkSkyWeatherTests.swift */; };
+		65F66DE0091FB3D4CC023407 /* Pods_DarkSkyWeather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880ADC722A33723425273861 /* Pods_DarkSkyWeather.framework */; };
+		798736044B522277508DA916 /* Pods_DarkSkyWeatherTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C97581E96E3728D8F669AB /* Pods_DarkSkyWeatherTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +29,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		36FFEE138A48B1224959C1EC /* Pods-DarkSkyWeather.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DarkSkyWeather.release.xcconfig"; path = "Target Support Files/Pods-DarkSkyWeather/Pods-DarkSkyWeather.release.xcconfig"; sourceTree = "<group>"; };
+		55C97581E96E3728D8F669AB /* Pods_DarkSkyWeatherTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DarkSkyWeatherTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B79B554F5099BB3C7047FD6 /* Pods-DarkSkyWeatherTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DarkSkyWeatherTests.debug.xcconfig"; path = "Target Support Files/Pods-DarkSkyWeatherTests/Pods-DarkSkyWeatherTests.debug.xcconfig"; sourceTree = "<group>"; };
 		613A472F22F866C000455029 /* DarkSkyWeather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DarkSkyWeather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		613A473222F866C000455029 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		613A473422F866C000455029 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -38,6 +43,9 @@
 		613A474622F866C200455029 /* DarkSkyWeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DarkSkyWeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		613A474A22F866C200455029 /* DarkSkyWeatherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkSkyWeatherTests.swift; sourceTree = "<group>"; };
 		613A474C22F866C200455029 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		810E1F0EE3192264942DBAFC /* Pods-DarkSkyWeatherTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DarkSkyWeatherTests.release.xcconfig"; path = "Target Support Files/Pods-DarkSkyWeatherTests/Pods-DarkSkyWeatherTests.release.xcconfig"; sourceTree = "<group>"; };
+		880ADC722A33723425273861 /* Pods_DarkSkyWeather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DarkSkyWeather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F452C3526255ADE2652BF441 /* Pods-DarkSkyWeather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DarkSkyWeather.debug.xcconfig"; path = "Target Support Files/Pods-DarkSkyWeather/Pods-DarkSkyWeather.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65F66DE0091FB3D4CC023407 /* Pods_DarkSkyWeather.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,18 +61,33 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				798736044B522277508DA916 /* Pods_DarkSkyWeatherTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4931D9E74D9FE597ED04E25B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F452C3526255ADE2652BF441 /* Pods-DarkSkyWeather.debug.xcconfig */,
+				36FFEE138A48B1224959C1EC /* Pods-DarkSkyWeather.release.xcconfig */,
+				5B79B554F5099BB3C7047FD6 /* Pods-DarkSkyWeatherTests.debug.xcconfig */,
+				810E1F0EE3192264942DBAFC /* Pods-DarkSkyWeatherTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		613A472622F866C000455029 = {
 			isa = PBXGroup;
 			children = (
 				613A473122F866C000455029 /* DarkSkyWeather */,
 				613A474922F866C200455029 /* DarkSkyWeatherTests */,
 				613A473022F866C000455029 /* Products */,
+				4931D9E74D9FE597ED04E25B /* Pods */,
+				E2A2680B1FC10673DBD83568 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,6 +123,15 @@
 			path = DarkSkyWeatherTests;
 			sourceTree = "<group>";
 		};
+		E2A2680B1FC10673DBD83568 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				880ADC722A33723425273861 /* Pods_DarkSkyWeather.framework */,
+				55C97581E96E3728D8F669AB /* Pods_DarkSkyWeatherTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -106,9 +139,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 613A474F22F866C200455029 /* Build configuration list for PBXNativeTarget "DarkSkyWeather" */;
 			buildPhases = (
+				1EACB92B468FFB198EBF86E2 /* [CP] Check Pods Manifest.lock */,
 				613A472B22F866C000455029 /* Sources */,
 				613A472C22F866C000455029 /* Frameworks */,
 				613A472D22F866C000455029 /* Resources */,
+				27E56D1B35C941D8D906BE7C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -123,6 +158,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 613A475222F866C200455029 /* Build configuration list for PBXNativeTarget "DarkSkyWeatherTests" */;
 			buildPhases = (
+				08FB84B11EF8B6679F2EF443 /* [CP] Check Pods Manifest.lock */,
 				613A474222F866C200455029 /* Sources */,
 				613A474322F866C200455029 /* Frameworks */,
 				613A474422F866C200455029 /* Resources */,
@@ -194,6 +230,70 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		08FB84B11EF8B6679F2EF443 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DarkSkyWeatherTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1EACB92B468FFB198EBF86E2 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DarkSkyWeather-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		27E56D1B35C941D8D906BE7C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DarkSkyWeather/Pods-DarkSkyWeather-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DarkSkyWeather/Pods-DarkSkyWeather-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DarkSkyWeather/Pods-DarkSkyWeather-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		613A472B22F866C000455029 /* Sources */ = {
@@ -362,6 +462,7 @@
 		};
 		613A475022F866C200455029 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F452C3526255ADE2652BF441 /* Pods-DarkSkyWeather.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -381,6 +482,7 @@
 		};
 		613A475122F866C200455029 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 36FFEE138A48B1224959C1EC /* Pods-DarkSkyWeather.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -400,6 +502,7 @@
 		};
 		613A475322F866C200455029 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5B79B554F5099BB3C7047FD6 /* Pods-DarkSkyWeatherTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -421,6 +524,7 @@
 		};
 		613A475422F866C200455029 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 810E1F0EE3192264942DBAFC /* Pods-DarkSkyWeatherTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
