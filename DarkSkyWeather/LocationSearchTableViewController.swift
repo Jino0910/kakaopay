@@ -11,9 +11,9 @@ import MapKit
 
 class LocationSearchTableViewController: UITableViewController {
 
+    weak var mapKitDelegate: MapKitProtocol?
     var matchingItems: [MKMapItem] = []
     var location: CLLocation?
-    
     
     func parseAddress(selectedItem:MKPlacemark) -> String {
         
@@ -59,8 +59,6 @@ extension LocationSearchTableViewController : UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let location = location, let searchBarText = searchController.searchBar.text, !searchBarText.isEmpty else { return }
         
-        print(searchBarText)
-        
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = searchBarText
         
@@ -78,7 +76,6 @@ extension LocationSearchTableViewController : UISearchResultsUpdating {
         
         search.start { response, error in
             
-            print("error = \(error)")
             
             guard let response = response else { return }
             
@@ -115,8 +112,7 @@ extension LocationSearchTableViewController {
 extension LocationSearchTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedItem = matchingItems[indexPath.row].placemark
-//        handleMapSearchDelegate?.dropPinZoomIn(selectedItem)
+        mapKitDelegate?.selectedLocation(placemark: matchingItems[indexPath.row].placemark)
         dismiss(animated: true, completion: nil)
     }
 }

@@ -9,24 +9,33 @@
 import UIKit
 import MapKit
 
-class MapKitVC: UIViewController, LocationProtocol {
+protocol MapKitProtocol: class {
+    func updateLocation(location: CLLocation)
+    func selectedLocation(placemark: MKPlacemark)
+}
+
+class MapKitVC: UIViewController, MapKitProtocol {
     
+    let locationManager = LocationManager()
     var searchController: UISearchController!
-    let searchTableVC = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "LocationSearchTableViewController") as! LocationSearchTableViewController
+    let searchTableViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "LocationSearchTableViewController") as! LocationSearchTableViewController
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        LocationManager.shared.getCurrentLocation(target: self)
+        locationManager.getCurrentLocation()
+        locationManager.mapKitDelegate = self
         
-        searchController = UISearchController(searchResultsController: searchTableVC)
-        searchController.searchResultsUpdater = searchTableVC
+        searchController = UISearchController(searchResultsController: searchTableViewController)
+        searchController.searchResultsUpdater = searchTableViewController
+        searchTableViewController.mapKitDelegate = self
 
-        let searchBar = searchController!.searchBar
+        let searchBar = searchController.searchBar
         searchBar.sizeToFit()
         searchBar.placeholder = "Search for places"
 
-        navigationItem.titleView = searchController?.searchBar
+        navigationItem.titleView = searchController.searchBar
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = true
         definesPresentationContext = true
@@ -37,6 +46,10 @@ extension MapKitVC {
     
     func updateLocation(location:CLLocation) {
         print("location = \(location.coordinate.latitude), \(location.coordinate.longitude)")
-        searchTableVC.location = location
+        searchTableViewController.location = location
+    }
+    
+    func selectedLocation(placemark: MKPlacemark) {
+        print(placemark)
     }
 }

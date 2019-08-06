@@ -9,24 +9,17 @@
 import Foundation
 import MapKit
 
-protocol LocationProtocol: class {
-    func updateLocation(location:CLLocation)
-}
-
 class LocationManager: NSObject {
     
-    static let shared = LocationManager()
+//    static let shared = LocationManager()
     
-    weak var locationDelegate: LocationProtocol?
+    weak var mapKitDelegate: MapKitProtocol?
+    
     let locationManager = CLLocationManager()
     var currentLocation: CLLocation?
     
-    func getCurrentLocation(target: LocationProtocol? = nil) {
-        
-        if let target = target {
-            locationDelegate = target
-        }
-        
+    func getCurrentLocation() {
+
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
@@ -48,10 +41,10 @@ extension LocationManager: CLLocationManagerDelegate {
         
         if let location = location, fabs(location.timestamp.timeIntervalSinceNow) < 5.0 {
 //            print("location = \(locations)")
-            currentLocation = location
-            locationDelegate?.updateLocation(location: location)
             locationManager.stopMonitoringSignificantLocationChanges()
             locationManager.stopUpdatingLocation()
+            currentLocation = location
+            mapKitDelegate?.updateLocation(location: location)
         }
     }
     
