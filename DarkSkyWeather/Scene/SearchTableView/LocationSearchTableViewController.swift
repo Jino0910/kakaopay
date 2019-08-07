@@ -112,7 +112,7 @@ extension LocationSearchTableViewController {
 extension LocationSearchTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        mapKitDelegate?.selectedLocation(placemark: matchingItems[indexPath.row].placemark)
+        mapKitDelegate?.selectedLocation(placeMark: matchingItems[indexPath.row].placemark)
         dismiss(animated: true, completion: nil)
     }
 }

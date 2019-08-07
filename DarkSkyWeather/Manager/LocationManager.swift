@@ -10,13 +10,13 @@ import Foundation
 import MapKit
 
 protocol MapKitProtocol: class {
-    func updateLocation(location: CLLocation)
-    func selectedLocation(placemark: MKPlacemark)
+    func updateLocation(placeMark: MKPlacemark)
+    func selectedLocation(placeMark: MKPlacemark)
 }
 
 extension MapKitProtocol {
-    func updateLocation(location: CLLocation) {}
-    func selectedLocation(placemark: MKPlacemark) {}
+    func updateLocation(placeMark: MKPlacemark) {}
+    func selectedLocation(placeMark: MKPlacemark) {}
 }
 
 class LocationManager: NSObject {
@@ -26,7 +26,7 @@ class LocationManager: NSObject {
     weak var mapKitDelegate: MapKitProtocol?
     
     let locationManager = CLLocationManager()
-    var currentLocation: CLLocation?
+//    var currentLocation: CLLocation?
     
     func getCurrentLocation() {
 
@@ -53,12 +53,26 @@ extension LocationManager: CLLocationManagerDelegate {
 //            print("location = \(locations)")
             locationManager.stopMonitoringSignificantLocationChanges()
             locationManager.stopUpdatingLocation()
-            currentLocation = location
-            mapKitDelegate?.updateLocation(location: location)
+            self.convertToAddressWith(location: location)
         }
     }
     
     internal func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error:: \(error)")
+    }
+}
+
+extension LocationManager {
+    
+    func convertToAddressWith(location: CLLocation) {
+        let geoCoder = CLGeocoder()
+        
+        geoCoder.reverseGeocodeLocation(location) { (placemarks, error) -> Void in
+            guard error == nil else { return }
+            
+            guard let placemark = placemarks?.first else { return }
+            
+            self.mapKitDelegate?.updateLocation(placeMark: MKPlacemark(placemark: placemark))
+        }
     }
 }

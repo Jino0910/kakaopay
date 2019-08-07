@@ -67,13 +67,13 @@ class WeatherViewController: UIViewController, WeatherDisplayLogic, MapKitProtoc
         super.viewDidLoad()
         
         configure()
+        interactor?.doRecentData()
     }
     
     // MARK: Do something
     
     private let disposeBag = DisposeBag()
     
-    let locationManager = LocationManager()
     var searchController: UISearchController!
     let searchTableViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "LocationSearchTableViewController") as! LocationSearchTableViewController
     
@@ -92,10 +92,6 @@ extension WeatherViewController: UITableViewDelegate {
     
     private func configureUI() {
         
-        // 현재 위치정보 요청
-        locationManager.getCurrentLocation()
-        locationManager.mapKitDelegate = self
-        
         searchController = UISearchController(searchResultsController: searchTableViewController)
         searchController.searchResultsUpdater = searchTableViewController
         searchTableViewController.mapKitDelegate = self
@@ -112,13 +108,16 @@ extension WeatherViewController: UITableViewDelegate {
     
     private func configureRx() {
         
-        router?.dataStore?.currentLocation
+        router?.dataStore?.currentPlacemark
             .asObservable()
-            .subscribe(onNext: { [weak self](location) in
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self](placeMark) in
                 guard let self = self else { return }
                 
-                self.searchTableViewController.location = location
-                self.doDarkSkyWeather(location: location.coordinate)
+                self.doDarkSkyWeather(placeMark: placeMark)
+                if let location = placeMark.location {
+                    self.searchTableViewController.location = location
+                }
             })
             .disposed(by: disposeBag)
     }
@@ -126,20 +125,16 @@ extension WeatherViewController: UITableViewDelegate {
 
 extension WeatherViewController {
     
-    private func doDarkSkyWeather(location: CLLocationCoordinate2D) {
-        let request = Weather.Info.Request(location: location)
+    private func doDarkSkyWeather(placeMark: MKPlacemark) {
+        let request = Weather.Info.Request(placeMark: placeMark)
         self.interactor?.doDarkSkyWeather(request: request)
     }
 }
 
 extension WeatherViewController {
     
-    // 현재위치 정보
-    func updateLocation(location: CLLocation) {
-        self.router?.dataStore?.currentLocation.accept(location)
-    }
     // 검색한 정보
-    func selectedLocation(placemark: MKPlacemark) {
-        self.doDarkSkyWeather(location: placemark.coordinate)
+    func selectedLocation(placeMark: MKPlacemark) {
+        self.doDarkSkyWeather(placeMark: placeMark)
     }
 }

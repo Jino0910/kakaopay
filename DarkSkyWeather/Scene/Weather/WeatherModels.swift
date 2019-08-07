@@ -18,7 +18,7 @@ enum Weather {
     
     enum Info {
         struct Request {
-            var location: CLLocationCoordinate2D
+            var placeMark: MKPlacemark
         }
         struct Response {
             var weatherModel: DarkSkyWeatherModel

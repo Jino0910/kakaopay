@@ -16,43 +16,72 @@ import RxCocoa
 import MapKit
 
 protocol WeatherBusinessLogic {
+    func doRecentData()
     func doDarkSkyWeather(request: Weather.Info.Request)
+//    func doDarkSkyWeather(request: Weather.Info.Request)
 }
 
 protocol WeatherDataStore {
-    var currentLocation: PublishRelay<CLLocation> { get set }
+    var currentPlacemark: PublishRelay<MKPlacemark> { get set }
 }
 
-class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore {
+class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, MapKitProtocol {
     
     var presenter: WeatherPresentationLogic?
     var worker = WeatherWorker()
+    var currentPlacemark = PublishRelay<MKPlacemark>()
     
     let disposeBag = DisposeBag()
-    var currentLocation = PublishRelay<CLLocation>()
     
+    let locationManager = LocationManager()
+    let placeManager = PlaceManager.shared
     
-    // MARK: Do something
+    func doRecentData() {
+        
+        placeManager.placeDelegate = self
+        placeManager.getSearchPlace()
+    }
     
+    // 날씨 정보 요청
     func doDarkSkyWeather(request: Weather.Info.Request) {
         
-        
         if let apiKey = Bundle.main.infoDictionary?["DarkSkySecretKey"] as? String {
-            worker.requestDarkSkyWeather(apiKey: apiKey, coordinate: request.location)
+            worker.requestDarkSkyWeather(apiKey: apiKey, coordinate: request.placeMark.coordinate)
                 .filter{$0.code == .code200}
                 .subscribe(onSuccess: { (code, json) in
                     
                     let model = DarkSkyWeatherModel(data: json)
                     
-                    print(model.currently)
+                    print(request.placeMark.name ?? "")
+                    print(model.latitude)
+                    print(model.longitude)
                     
                     let response = Weather.Info.Response(weatherModel: model)
                     self.presenter?.presentDarkSkyWeather(response: response)
                 })
                 .disposed(by: disposeBag)
-        
         }
     }
 }
 
-
+extension WeatherInteractor {
+    
+    // 최근 검색한 장소
+    func recentData(place: Place) {
+        
+        let request = Weather.Info.Request(placeMark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude), addressDictionary: ["name":place.keyword ?? ""]))
+        self.doDarkSkyWeather(request: request)
+    }
+    
+    // 최근 검색한 장소 없음
+    func noSearchData() {
+        // 현재 위치정보 요청
+        locationManager.getCurrentLocation()
+        locationManager.mapKitDelegate = self
+    }
+    // 현재위치 정보
+    func updateLocation(placeMark: MKPlacemark) {
+        
+        self.currentPlacemark.accept(placeMark)
+    }
+}
