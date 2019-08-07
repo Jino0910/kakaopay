@@ -27,6 +27,11 @@
 		613A47A522FAA17400455029 /* WeatherModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A479F22FAA17400455029 /* WeatherModels.swift */; };
 		613A47A622FAA17400455029 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A47A022FAA17400455029 /* WeatherViewController.swift */; };
 		613A47A722FAA17400455029 /* WeatherInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A47A122FAA17400455029 /* WeatherInteractor.swift */; };
+		613A47AF22FABDED00455029 /* CoreDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A47AE22FABDED00455029 /* CoreDataViewController.swift */; };
+		613A47B622FABE1B00455029 /* Place+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A47B422FABE1B00455029 /* Place+CoreDataProperties.swift */; };
+		613A47B722FABE1B00455029 /* Place+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A47B522FABE1B00455029 /* Place+CoreDataClass.swift */; };
+		613A47B922FABE4600455029 /* Date+Extionsion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A47B822FABE4600455029 /* Date+Extionsion.swift */; };
+		613A47BB22FABE7300455029 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A47BA22FABE7300455029 /* SearchManager.swift */; };
 		65F66DE0091FB3D4CC023407 /* Pods_DarkSkyWeather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880ADC722A33723425273861 /* Pods_DarkSkyWeather.framework */; };
 		798736044B522277508DA916 /* Pods_DarkSkyWeatherTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C97581E96E3728D8F669AB /* Pods_DarkSkyWeatherTests.framework */; };
 /* End PBXBuildFile section */
@@ -69,6 +74,11 @@
 		613A479F22FAA17400455029 /* WeatherModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModels.swift; sourceTree = "<group>"; };
 		613A47A022FAA17400455029 /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
 		613A47A122FAA17400455029 /* WeatherInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInteractor.swift; sourceTree = "<group>"; };
+		613A47AE22FABDED00455029 /* CoreDataViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataViewController.swift; sourceTree = "<group>"; };
+		613A47B422FABE1B00455029 /* Place+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Place+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		613A47B522FABE1B00455029 /* Place+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Place+CoreDataClass.swift"; sourceTree = "<group>"; };
+		613A47B822FABE4600455029 /* Date+Extionsion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extionsion.swift"; sourceTree = "<group>"; };
+		613A47BA22FABE7300455029 /* SearchManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchManager.swift; sourceTree = "<group>"; };
 		810E1F0EE3192264942DBAFC /* Pods-DarkSkyWeatherTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DarkSkyWeatherTests.release.xcconfig"; path = "Target Support Files/Pods-DarkSkyWeatherTests/Pods-DarkSkyWeatherTests.release.xcconfig"; sourceTree = "<group>"; };
 		880ADC722A33723425273861 /* Pods_DarkSkyWeather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DarkSkyWeather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F452C3526255ADE2652BF441 /* Pods-DarkSkyWeather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DarkSkyWeather.debug.xcconfig"; path = "Target Support Files/Pods-DarkSkyWeather/Pods-DarkSkyWeather.debug.xcconfig"; sourceTree = "<group>"; };
@@ -158,6 +168,7 @@
 				613A478B22F9B2FD00455029 /* API.swift */,
 				613A478922F9B2C600455029 /* APIManager.swift */,
 				613A479722FA9F9900455029 /* LocationManager.swift */,
+				613A47BA22FABE7300455029 /* SearchManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -166,6 +177,8 @@
 			isa = PBXGroup;
 			children = (
 				613A478D22F9C0FC00455029 /* DarkSkyWeatherModel.swift */,
+				613A47B522FABE1B00455029 /* Place+CoreDataClass.swift */,
+				613A47B422FABE1B00455029 /* Place+CoreDataProperties.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -174,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				613A479122FA9F7700455029 /* String+Extension.swift */,
+				613A47B822FABE4600455029 /* Date+Extionsion.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -213,6 +227,7 @@
 			children = (
 				613A473422F866C000455029 /* ViewController.swift */,
 				613A479322FA9F9000455029 /* MapKitVC.swift */,
+				613A47AE22FABDED00455029 /* CoreDataViewController.swift */,
 			);
 			path = Temp;
 			sourceTree = "<group>";
@@ -407,13 +422,18 @@
 				613A47A222FAA17400455029 /* WeatherPresenter.swift in Sources */,
 				613A478A22F9B2C600455029 /* APIManager.swift in Sources */,
 				613A479822FA9F9900455029 /* LocationManager.swift in Sources */,
+				613A47B722FABE1B00455029 /* Place+CoreDataClass.swift in Sources */,
 				613A479222FA9F7700455029 /* String+Extension.swift in Sources */,
 				613A473522F866C000455029 /* ViewController.swift in Sources */,
+				613A47AF22FABDED00455029 /* CoreDataViewController.swift in Sources */,
 				613A479622FA9F9100455029 /* LocationSearchTableViewController.swift in Sources */,
 				613A478E22F9C0FC00455029 /* DarkSkyWeatherModel.swift in Sources */,
 				613A47A522FAA17400455029 /* WeatherModels.swift in Sources */,
 				613A47A322FAA17400455029 /* WeatherWorker.swift in Sources */,
+				613A47B922FABE4600455029 /* Date+Extionsion.swift in Sources */,
 				613A473322F866C000455029 /* AppDelegate.swift in Sources */,
+				613A47BB22FABE7300455029 /* SearchManager.swift in Sources */,
+				613A47B622FABE1B00455029 /* Place+CoreDataProperties.swift in Sources */,
 				613A47A422FAA17400455029 /* WeatherRouter.swift in Sources */,
 				613A47A722FAA17400455029 /* WeatherInteractor.swift in Sources */,
 				613A473B22F866C000455029 /* DarkSkyWeather.xcdatamodeld in Sources */,
