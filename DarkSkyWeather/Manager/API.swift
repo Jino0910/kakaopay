@@ -12,7 +12,7 @@ import UIKit
 enum Kakao {
     
     /// 날씨정보 검색
-    case searchDarkSkyWeather(key: String, langtitude: CGFloat, longitude: CGFloat)
+    case searchDarkSkyWeather(key: String, langtitude: Double, longitude: Double)
 }
 
 extension Kakao {

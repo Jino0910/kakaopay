@@ -9,11 +9,6 @@
 import UIKit
 import MapKit
 
-protocol MapKitProtocol: class {
-    func updateLocation(location: CLLocation)
-    func selectedLocation(placemark: MKPlacemark)
-}
-
 class MapKitVC: UIViewController, MapKitProtocol {
     
     let locationManager = LocationManager()

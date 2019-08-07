@@ -9,6 +9,16 @@
 import Foundation
 import MapKit
 
+protocol MapKitProtocol: class {
+    func updateLocation(location: CLLocation)
+    func selectedLocation(placemark: MKPlacemark)
+}
+
+extension MapKitProtocol {
+    func updateLocation(location: CLLocation) {}
+    func selectedLocation(placemark: MKPlacemark) {}
+}
+
 class LocationManager: NSObject {
     
 //    static let shared = LocationManager()
