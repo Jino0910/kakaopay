@@ -9,5 +9,8 @@
 import Foundation
 
 extension String {
- 
+    
+    func darkSkyIconURL() -> URL? {
+        return URL(string: "https://darksky.net/images/weather-icons/\(self).png")
+    }
 }

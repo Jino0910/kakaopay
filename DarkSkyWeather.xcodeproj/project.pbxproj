@@ -32,6 +32,8 @@
 		613A47BB22FABE7300455029 /* PlaceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A47BA22FABE7300455029 /* PlaceManager.swift */; };
 		613A47C222FBC5F400455029 /* Place+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A47C022FBC5F400455029 /* Place+CoreDataClass.swift */; };
 		613A47C322FBC5F400455029 /* Place+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613A47C122FBC5F400455029 /* Place+CoreDataProperties.swift */; };
+		6188E5DD22FC53D400C16FBA /* UInt64+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6188E5DC22FC53D400C16FBA /* UInt64+Extension.swift */; };
+		6188E5DF22FC54A100C16FBA /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6188E5DE22FC54A100C16FBA /* Int+Extension.swift */; };
 		65F66DE0091FB3D4CC023407 /* Pods_DarkSkyWeather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880ADC722A33723425273861 /* Pods_DarkSkyWeather.framework */; };
 		798736044B522277508DA916 /* Pods_DarkSkyWeatherTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55C97581E96E3728D8F669AB /* Pods_DarkSkyWeatherTests.framework */; };
 /* End PBXBuildFile section */
@@ -79,6 +81,8 @@
 		613A47BA22FABE7300455029 /* PlaceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceManager.swift; sourceTree = "<group>"; };
 		613A47C022FBC5F400455029 /* Place+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Place+CoreDataClass.swift"; sourceTree = "<group>"; };
 		613A47C122FBC5F400455029 /* Place+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Place+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		6188E5DC22FC53D400C16FBA /* UInt64+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UInt64+Extension.swift"; sourceTree = "<group>"; };
+		6188E5DE22FC54A100C16FBA /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
 		810E1F0EE3192264942DBAFC /* Pods-DarkSkyWeatherTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DarkSkyWeatherTests.release.xcconfig"; path = "Target Support Files/Pods-DarkSkyWeatherTests/Pods-DarkSkyWeatherTests.release.xcconfig"; sourceTree = "<group>"; };
 		880ADC722A33723425273861 /* Pods_DarkSkyWeather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DarkSkyWeather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F452C3526255ADE2652BF441 /* Pods-DarkSkyWeather.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DarkSkyWeather.debug.xcconfig"; path = "Target Support Files/Pods-DarkSkyWeather/Pods-DarkSkyWeather.debug.xcconfig"; sourceTree = "<group>"; };
@@ -187,6 +191,8 @@
 			isa = PBXGroup;
 			children = (
 				613A479122FA9F7700455029 /* String+Extension.swift */,
+				6188E5DC22FC53D400C16FBA /* UInt64+Extension.swift */,
+				6188E5DE22FC54A100C16FBA /* Int+Extension.swift */,
 				613A47B822FABE4600455029 /* Date+Extionsion.swift */,
 			);
 			path = Extension;
@@ -434,6 +440,8 @@
 				613A47B922FABE4600455029 /* Date+Extionsion.swift in Sources */,
 				613A473322F866C000455029 /* AppDelegate.swift in Sources */,
 				613A47BB22FABE7300455029 /* PlaceManager.swift in Sources */,
+				6188E5DF22FC54A100C16FBA /* Int+Extension.swift in Sources */,
+				6188E5DD22FC53D400C16FBA /* UInt64+Extension.swift in Sources */,
 				613A47A422FAA17400455029 /* WeatherRouter.swift in Sources */,
 				613A47A722FAA17400455029 /* WeatherInteractor.swift in Sources */,
 				613A473B22F866C000455029 /* DarkSkyWeather.xcdatamodeld in Sources */,
