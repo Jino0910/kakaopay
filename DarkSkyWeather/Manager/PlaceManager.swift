@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 import CoreData
 import MapKit
 
@@ -27,14 +29,12 @@ class PlaceManager: NSObject {
     func getSearchPlace() {
         
         let request = NSFetchRequest<Place>(entityName: entityKey)
-//        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-//        request.returnsObjectsAsFaults = false
+        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+        request.returnsObjectsAsFaults = false
         
         do {
             // 최근 검색 기록들
             let places = try context.fetch(request)
-            
-            print(places)
             
             if let place = places.first {
                 placeDelegate?.resultPlace(place: place)
@@ -48,15 +48,25 @@ class PlaceManager: NSObject {
         }
     }
     
-    func savePlace(mkMapItem: MKMapItem) {
+    func savePlace(mkMapItem: MKMapItem) -> Single<Bool> {
         
-        let place = NSEntityDescription.insertNewObject(forEntityName: entityKey, into: context) as! Place
-        
-        place.date = NSDate()
-        place.keyword = mkMapItem.name
-        place.latitude = mkMapItem.placemark.coordinate.latitude
-        place.longitude = mkMapItem.placemark.coordinate.longitude
-        place.locality = mkMapItem.placemark.locality
-        
+        return Single<Bool>.create(subscribe: { (single) -> Disposable in
+            let place = NSEntityDescription.insertNewObject(forEntityName: self.entityKey, into: self.context) as! Place
+            
+            place.date = NSDate()
+            place.keyword = mkMapItem.name
+            place.latitude = mkMapItem.placemark.coordinate.latitude
+            place.longitude = mkMapItem.placemark.coordinate.longitude
+            place.locality = mkMapItem.placemark.locality
+            
+            do {
+                try self.context.save()
+                single(.success(true))
+            } catch {
+                single(.success(false))
+            }
+          
+            return Disposables.create {}
+        })
     }
 }

@@ -46,7 +46,7 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
     
     // 날씨 정보 요청
     func doDarkSkyWeather(request: Weather.Info.Request) {
-        
+    
         if let apiKey = Bundle.main.infoDictionary?["DarkSkySecretKey"] as? String {
             worker.requestDarkSkyWeather(apiKey: apiKey, coordinate: request.placeMark.coordinate)
                 .filter{$0.code == .code200}
@@ -69,6 +69,13 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
     // 최근 검색정보저장
     func doSaveLocation(mkMapItem: MKMapItem) {
         worker.requestSaveLocation(mkMapItem: mkMapItem)
+            .subscribe(onSuccess: { (value) in
+                if !value {
+                    print("Failed saving")
+                }
+            })
+            .disposed(by: disposeBag)
+            
     }
 }
 

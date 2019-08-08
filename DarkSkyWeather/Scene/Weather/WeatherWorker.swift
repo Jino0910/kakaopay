@@ -21,8 +21,8 @@ class WeatherWorker {
         return APIManager.request(target: .searchDarkSkyWeather(key: apiKey, langtitude: coordinate.latitude, longitude: coordinate.longitude))
     }
     
-    func requestSaveLocation(mkMapItem: MKMapItem) {
-        PlaceManager.shared.savePlace(mkMapItem: mkMapItem)
+    func requestSaveLocation(mkMapItem: MKMapItem) -> Single<Bool> {
+        return PlaceManager.shared.savePlace(mkMapItem: mkMapItem)
     }
 }
 
