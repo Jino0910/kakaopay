@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 import MapKit
 
 class LocationSearchTableViewController: UITableViewController {
@@ -14,20 +16,28 @@ class LocationSearchTableViewController: UITableViewController {
     weak var mapKitDelegate: MapKitProtocol?
     var matchingItems: [MKMapItem] = []
     var location: CLLocation?
+    var searchBarText = BehaviorRelay<String>(value: "")
+    let disposeBag = DisposeBag()
     
-    func parseAddress(selectedItem:MKPlacemark) -> String {
+    override func viewDidLoad() {
         
-        // put a space between "4" and "Melrose Place"
-        let firstSpace = (selectedItem.subThoroughfare != nil &&
-            selectedItem.thoroughfare != nil) ? " " : ""
+        searchBarText
+            .asObservable()
+            .debounce(.milliseconds(500), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .filter{!$0.isEmpty}
+            .map{$0}
+            .bind(onNext: updateTableView)
+            .disposed(by: disposeBag)
+    }
+    
+    func parseAddress(selectedItem: MKPlacemark) -> String {
         
-        // put a comma between street and city/state "274-5", "영화동", "", "경기도"
-        let comma = (selectedItem.subThoroughfare != nil || selectedItem.thoroughfare != nil) &&
-            (selectedItem.subAdministrativeArea != nil || selectedItem.administrativeArea != nil) ? ", " : ""
+        let firstSpace = selectedItem.subThoroughfare != nil ? " " : ""
         
-        // put a space between "Washington" and "DC"
-        let secondSpace = (selectedItem.subAdministrativeArea != nil &&
-            selectedItem.administrativeArea != nil) ? " " : ""
+        let comma = selectedItem.subThoroughfare != nil || selectedItem.thoroughfare != nil ? ", " : ""
+        
+        let secondSpace = selectedItem.administrativeArea != nil ? " " : ""
         
         let addressLine = String(
             format:"%@%@%@%@%@%@%@",
@@ -57,7 +67,14 @@ class LocationSearchTableViewController: UITableViewController {
 extension LocationSearchTableViewController : UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-        guard let location = location, let searchBarText = searchController.searchBar.text, !searchBarText.isEmpty else { return }
+        
+        guard let searchBarText = searchController.searchBar.text, !searchBarText.isEmpty else { return }
+        self.searchBarText.accept(searchBarText)
+    }
+    
+    func updateTableView(searchBarText: String) {
+        
+        let location = self.location ?? CLLocation(latitude: 37.39490845464246, longitude: 127.11122860442993) // 현재위치 값이 없으면 판교 셋팅
         
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = searchBarText
@@ -76,8 +93,7 @@ extension LocationSearchTableViewController : UISearchResultsUpdating {
         
         search.start { response, error in
             
-            
-            guard let response = response else { return }
+            guard let response = response else { print(error ?? ""); return }
             
             self.matchingItems = response.mapItems.sorted(by: { (mkMapItem1, mkMapItem2) -> Bool in
                 let pointA = CLLocation(latitude: mkMapItem1.placemark.coordinate.latitude, longitude: mkMapItem1.placemark.coordinate.longitude)
@@ -85,11 +101,10 @@ extension LocationSearchTableViewController : UISearchResultsUpdating {
                 
                 return pointA.distance(from: location) < pointB.distance(from: location)
             })
-
+            
             self.tableView.reloadData()
         }
     }
-    
 }
 
 extension LocationSearchTableViewController {
@@ -106,7 +121,6 @@ extension LocationSearchTableViewController {
         cell.detailTextLabel?.text = parseAddress(selectedItem: selectedItem)
         return cell
     }
-    
 }
 
 extension LocationSearchTableViewController {
