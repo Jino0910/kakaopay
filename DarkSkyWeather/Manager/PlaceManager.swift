@@ -12,8 +12,7 @@ import MapKit
 
 protocol PlaceProtocol: class {
     
-    func recentData(place: Place)
-    func noSearchData()
+    func resultPlace(place: Place?)
 }
 
 class PlaceManager: NSObject {
@@ -35,14 +34,16 @@ class PlaceManager: NSObject {
             // 최근 검색 기록들
             let places = try context.fetch(request)
             
+            print(places)
+            
             if let place = places.first {
-                placeDelegate?.recentData(place: place)
+                placeDelegate?.resultPlace(place: place)
             } else {
-                placeDelegate?.noSearchData()
+                placeDelegate?.resultPlace(place: nil)
             }
             
         } catch {
-            placeDelegate?.noSearchData()
+            placeDelegate?.resultPlace(place: nil)
             print("Failed")
         }
     }
@@ -56,5 +57,6 @@ class PlaceManager: NSObject {
         place.latitude = mkMapItem.placemark.coordinate.latitude
         place.longitude = mkMapItem.placemark.coordinate.longitude
         place.locality = mkMapItem.placemark.locality
+        
     }
 }

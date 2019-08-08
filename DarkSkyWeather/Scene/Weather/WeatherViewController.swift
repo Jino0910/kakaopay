@@ -114,7 +114,12 @@ extension WeatherViewController: UITableViewDelegate {
             .subscribe(onNext: { [weak self](placeMark) in
                 guard let self = self else { return }
                 
-                self.doDarkSkyWeather(placeMark: placeMark)
+                // 저장되어 있는 장소가 없을 경우만 현재 위치정보로 날씨 정보 요청
+                if self.router?.dataStore?.recentPlace == nil {
+                    self.doDarkSkyWeather(placeMark: placeMark)
+                }
+                
+                // 검색 테이블에 현재 위치 셋 (검색 리스트 거리별순 정렬 위해)
                 if let location = placeMark.location {
                     self.searchTableViewController.location = location
                 }
