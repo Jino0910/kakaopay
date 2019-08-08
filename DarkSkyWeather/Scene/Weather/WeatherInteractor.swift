@@ -14,6 +14,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import MapKit
+import Contacts
 
 protocol WeatherBusinessLogic {
     func doRecentData()
@@ -53,12 +54,12 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
                     
                     let model = DarkSkyWeatherModel(data: json)
                     
-                    print(request.placeMark.name ?? "")
+                    print(request.keyword)
                     print(request.placeMark.locality ?? "")
                     print(model.latitude)
                     print(model.longitude)
                     
-                    let response = Weather.Info.Response(weatherModel: model)
+                    let response = Weather.Info.Response(weatherModel: model, keyword: request.keyword)
                     self.presenter?.presentDarkSkyWeather(response: response)
                 })
                 .disposed(by: disposeBag)
@@ -68,8 +69,6 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
     // 최근 검색정보저장
     func doSaveLocation(mkMapItem: MKMapItem) {
         worker.requestSaveLocation(mkMapItem: mkMapItem)
-        
-        PlaceManager.shared.getSearchPlace()
     }
 }
 
@@ -79,7 +78,11 @@ extension WeatherInteractor {
         
         if let place = place {
             // 저장되어 있는 장소로 정보 날씨 요청
-            let request = Weather.Info.Request(placeMark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude), addressDictionary: ["name":place.keyword ?? "", "locality":place.locality ?? ""]))
+            
+            let request = Weather.Info.Request(placeMark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude),
+                                                                      addressDictionary: [CNPostalAddressCityKey:place.locality ?? ""]),
+                                               keyword: place.keyword ?? "")
+            
             self.doDarkSkyWeather(request: request)
             self.recentPlace = place
         }

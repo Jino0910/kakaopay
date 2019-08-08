@@ -131,7 +131,7 @@ extension WeatherViewController: UITableViewDelegate {
 extension WeatherViewController {
     
     private func doDarkSkyWeather(placeMark: MKPlacemark) {
-        let request = Weather.Info.Request(placeMark: placeMark)
+        let request = Weather.Info.Request(placeMark: placeMark, keyword: placeMark.name ?? "")
         self.interactor?.doDarkSkyWeather(request: request)
     }
 }

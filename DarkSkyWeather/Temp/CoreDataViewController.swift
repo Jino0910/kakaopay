@@ -23,11 +23,12 @@ class CoreDataViewController: UIViewController, PlaceProtocol {
 
 extension CoreDataViewController {
     
-    func recentData(place: Place) {
-        print(place.keyword ?? "")
-    }
-    
-    func noSearchData() {
+    func resultPlace(place: Place?) {
         
+        if let place = place {
+            
+            print(place.locality ?? "")
+            print(place.keyword ?? "")
+        }
     }
 }

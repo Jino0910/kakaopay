@@ -19,9 +19,11 @@ enum Weather {
     enum Info {
         struct Request {
             var placeMark: MKPlacemark
+            var keyword: String
         }
         struct Response {
             var weatherModel: DarkSkyWeatherModel
+            var keyword: String
         }
         struct ViewModel {
             

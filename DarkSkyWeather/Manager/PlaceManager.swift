@@ -27,8 +27,8 @@ class PlaceManager: NSObject {
     func getSearchPlace() {
         
         let request = NSFetchRequest<Place>(entityName: entityKey)
-        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-        request.returnsObjectsAsFaults = false
+//        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+//        request.returnsObjectsAsFaults = false
         
         do {
             // 최근 검색 기록들
