@@ -18,7 +18,7 @@ import MapKit
 protocol WeatherBusinessLogic {
     func doRecentData()
     func doDarkSkyWeather(request: Weather.Info.Request)
-//    func doDarkSkyWeather(request: Weather.Info.Request)
+    func doSaveLocation(mkMapItem: MKMapItem)
 }
 
 protocol WeatherDataStore {
@@ -53,6 +53,7 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
                     let model = DarkSkyWeatherModel(data: json)
                     
                     print(request.placeMark.name ?? "")
+                    print(request.placeMark.locality ?? "")
                     print(model.latitude)
                     print(model.longitude)
                     
@@ -62,14 +63,20 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
                 .disposed(by: disposeBag)
         }
     }
+    
+    // 최근 검색정보저장
+    func doSaveLocation(mkMapItem: MKMapItem) {
+        worker.requestSaveLocation(mkMapItem: mkMapItem)
+        
+        PlaceManager.shared.getSearchPlace()
+    }
 }
 
 extension WeatherInteractor {
     
     // 최근 검색한 장소
     func recentData(place: Place) {
-        
-        let request = Weather.Info.Request(placeMark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude), addressDictionary: ["name":place.keyword ?? ""]))
+        let request = Weather.Info.Request(placeMark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude), addressDictionary: ["name":place.keyword ?? "", "locality":place.locality ?? ""]))
         self.doDarkSkyWeather(request: request)
     }
     

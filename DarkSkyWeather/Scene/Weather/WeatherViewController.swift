@@ -134,7 +134,8 @@ extension WeatherViewController {
 extension WeatherViewController {
     
     // 검색한 정보
-    func selectedLocation(placeMark: MKPlacemark) {
-        self.doDarkSkyWeather(placeMark: placeMark)
+    func selectedLocation(mkMapItem: MKMapItem) {
+        self.doDarkSkyWeather(placeMark: mkMapItem.placemark)
+        self.interactor?.doSaveLocation(mkMapItem: mkMapItem)
     }
 }

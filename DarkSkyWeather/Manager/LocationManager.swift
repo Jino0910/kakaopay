@@ -11,12 +11,12 @@ import MapKit
 
 protocol MapKitProtocol: class {
     func updateLocation(placeMark: MKPlacemark)
-    func selectedLocation(placeMark: MKPlacemark)
+    func selectedLocation(mkMapItem: MKMapItem)
 }
 
 extension MapKitProtocol {
     func updateLocation(placeMark: MKPlacemark) {}
-    func selectedLocation(placeMark: MKPlacemark) {}
+    func selectedLocation(mkMapItem: MKMapItem) {}
 }
 
 class LocationManager: NSObject {

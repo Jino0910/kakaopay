@@ -55,5 +55,6 @@ class PlaceManager: NSObject {
         place.keyword = mkMapItem.name
         place.latitude = mkMapItem.placemark.coordinate.latitude
         place.longitude = mkMapItem.placemark.coordinate.longitude
+        place.locality = mkMapItem.placemark.locality
     }
 }

@@ -20,5 +20,9 @@ class WeatherWorker {
     func requestDarkSkyWeather(apiKey: String, coordinate: CLLocationCoordinate2D) -> PrimitiveSequence<SingleTrait, APIResponseType> {
         return APIManager.request(target: .searchDarkSkyWeather(key: apiKey, langtitude: coordinate.latitude, longitude: coordinate.longitude))
     }
+    
+    func requestSaveLocation(mkMapItem: MKMapItem) {
+        PlaceManager.shared.savePlace(mkMapItem: mkMapItem)
+    }
 }
 

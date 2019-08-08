@@ -1,9 +1,8 @@
 //
 //  Place+CoreDataClass.swift
-//  DarkSkyWeather
+//  
 //
-//  Created by rowkaxl on 06/08/2019.
-//  Copyright © 2019 rowkaxl. All rights reserved.
+//  Created by rowkaxl on 08/08/2019.
 //
 //
 
