@@ -17,18 +17,18 @@ class CoreDataViewController: UIViewController, PlaceProtocol {
         super.viewDidLoad()
         
         placeManager.placeDelegate = self
-        placeManager.getSearchPlace()
+        placeManager.getSearchPlaces()
     }
 }
 
 extension CoreDataViewController {
     
-    func resultPlace(place: Place?) {
+    func resultPlaces(place: [Place]?) {
         
-        if let place = place {
-            
-            print(place.locality ?? "")
-            print(place.keyword ?? "")
-        }
+//        if let place = place {
+//
+//            print(place.locality ?? "")
+//            print(place.keyword ?? "")
+//        }
     }
 }

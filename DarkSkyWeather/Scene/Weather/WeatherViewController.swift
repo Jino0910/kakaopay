@@ -67,7 +67,7 @@ class WeatherViewController: UIViewController, WeatherDisplayLogic, MapKitProtoc
         super.viewDidLoad()
         
         configure()
-        interactor?.doRecentData()
+        interactor?.doCurrentLocation()
     }
     
     // MARK: Do something
@@ -109,20 +109,25 @@ extension WeatherViewController: UITableViewDelegate {
     private func configureRx() {
         
         router?.dataStore?.currentPlacemark
+            .skip(1)
             .asObservable()
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self](placeMark) in
                 guard let self = self else { return }
                 
-                // 저장되어 있는 장소가 없을 경우만 현재 위치정보로 날씨 정보 요청
-                if self.router?.dataStore?.recentPlace == nil {
-                    self.doDarkSkyWeather(placeMark: placeMark)
-                }
+                print(placeMark)
                 
-                // 검색 테이블에 현재 위치 셋 (검색 리스트 거리별순 정렬 위해)
-                if let location = placeMark.location {
-                    self.searchTableViewController.location = location
-                }
+                self.interactor?.doSavedPlaces()
+                
+//                // 저장되어 있는 장소가 없을 경우만 현재 위치정보로 날씨 정보 요청
+//                if self.router?.dataStore?.recentPlace == nil {
+//                    self.doDarkSkyWeather(placeMark: placeMark)
+//                }
+//
+//                // 검색 테이블에 현재 위치 셋 (검색 리스트 거리별순 정렬 위해)
+//                if let location = placeMark.location {
+//                    self.searchTableViewController.location = location
+//                }
             })
             .disposed(by: disposeBag)
     }

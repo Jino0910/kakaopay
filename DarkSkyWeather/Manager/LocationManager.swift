@@ -10,12 +10,12 @@ import Foundation
 import MapKit
 
 protocol MapKitProtocol: class {
-    func updateLocation(placeMark: MKPlacemark)
+    func updateLocation(placeMark: MKPlacemark?)
     func selectedLocation(mkMapItem: MKMapItem)
 }
 
 extension MapKitProtocol {
-    func updateLocation(placeMark: MKPlacemark) {}
+    func updateLocation(placeMark: MKPlacemark?) {}
     func selectedLocation(mkMapItem: MKMapItem) {}
 }
 
@@ -59,6 +59,7 @@ extension LocationManager: CLLocationManagerDelegate {
     
     internal func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error:: \(error)")
+        self.mapKitDelegate?.updateLocation(placeMark: nil)
     }
 }
 

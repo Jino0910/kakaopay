@@ -17,31 +17,38 @@ import MapKit
 import Contacts
 
 protocol WeatherBusinessLogic {
-    func doRecentData()
+    func doCurrentLocation()
+    func doSavedPlaces()
     func doDarkSkyWeather(request: Weather.Info.Request)
     func doSaveLocation(mkMapItem: MKMapItem)
 }
 
 protocol WeatherDataStore {
-    var currentPlacemark: PublishRelay<MKPlacemark> { get set }
-    var recentPlace: Place? { get set }
+    var currentPlacemark: BehaviorRelay<MKPlacemark?> { get set }
+    var savedPlaces: [Place]? { get set }
 }
 
 class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, MapKitProtocol {
     
     var presenter: WeatherPresentationLogic?
     var worker = WeatherWorker()
-    var currentPlacemark = PublishRelay<MKPlacemark>()
-    var recentPlace: Place? = nil
+    var currentPlacemark = BehaviorRelay<MKPlacemark?>(value: nil)
+    var savedPlaces: [Place]? = nil
     
     let disposeBag = DisposeBag()
     
     let locationManager = LocationManager()
     
-    func doRecentData() {
-        
+    // 현재 위치정보 요청
+    func doCurrentLocation() {
+        locationManager.getCurrentLocation()
+        locationManager.mapKitDelegate = self
+    }
+    
+    // 저장된 장소정보
+    func doSavedPlaces() {
         PlaceManager.shared.placeDelegate = self
-        PlaceManager.shared.getSearchPlace()
+        PlaceManager.shared.getSearchPlaces()
     }
     
     // 날씨 정보 요청
@@ -81,32 +88,25 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
 
 extension WeatherInteractor {
     
-    func resultPlace(place: Place?) {
+    func resultPlaces(place: [Place]?) {
         
-        if let place = place {
             // 저장되어 있는 장소로 정보 날씨 요청
-            
-            let request = Weather.Info.Request(placeMark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude),
-                                                                      addressDictionary: [CNPostalAddressCityKey:place.locality ?? ""]),
-                                               keyword: place.keyword ?? "")
-            
-            self.doDarkSkyWeather(request: request)
-            self.recentPlace = place
-        }
-        self.getCurrentLocation()
+//
+//            let request = Weather.Info.Request(placeMark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude),
+//                                                                      addressDictionary: [CNPostalAddressCityKey:place.locality ?? ""]),
+//                                               keyword: place.keyword ?? "")
+//            
+//            self.doDarkSkyWeather(request: request)
+//            self.recentPlace = place
+//        }
+//        self.getCurrentLocation()
     }
 }
 
 extension WeatherInteractor {
     
-    // 현재 위치정보 요청
-    func getCurrentLocation() {
-        locationManager.getCurrentLocation()
-        locationManager.mapKitDelegate = self
-    }
-    
     // 현재위치 정보
-    func updateLocation(placeMark: MKPlacemark) {
+    func updateLocation(placeMark: MKPlacemark?) {
         self.currentPlacemark.accept(placeMark)
     }
 }

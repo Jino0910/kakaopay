@@ -14,7 +14,7 @@ import MapKit
 
 protocol PlaceProtocol: class {
     
-    func resultPlace(place: Place?)
+    func savedPlaces(place: [Place]?)
 }
 
 class PlaceManager: NSObject {
@@ -26,25 +26,19 @@ class PlaceManager: NSObject {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    func getSearchPlace() {
+    func getSearchPlaces() {
         
         let request = NSFetchRequest<Place>(entityName: entityKey)
-        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+        request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
         request.returnsObjectsAsFaults = false
         
         do {
-            // 최근 검색 기록들
+            // 최근 검색한 장소들
             let places = try context.fetch(request)
-            
-            if let place = places.first {
-                placeDelegate?.resultPlace(place: place)
-            } else {
-                placeDelegate?.resultPlace(place: nil)
-            }
+            placeDelegate?.savedPlaces(place: places)
             
         } catch {
-            placeDelegate?.resultPlace(place: nil)
-            print("Failed")
+            placeDelegate?.savedPlaces(place: nil)
         }
     }
     
