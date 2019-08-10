@@ -8,9 +8,10 @@
 
 import UIKit
 import CoreData
+import MapKit
 
 class CoreDataViewController: UIViewController, PlaceProtocol {
-    
+
     let placeManager = PlaceManager.shared
     
     override func viewDidLoad() {
@@ -23,12 +24,7 @@ class CoreDataViewController: UIViewController, PlaceProtocol {
 
 extension CoreDataViewController {
     
-    func resultPlaces(place: [Place]?) {
-        
-//        if let place = place {
-//
-//            print(place.locality ?? "")
-//            print(place.keyword ?? "")
-//        }
+    func savedPlacemarks(placemarks: [MKPlacemark]?) {
+//        print(placemarks)
     }
 }

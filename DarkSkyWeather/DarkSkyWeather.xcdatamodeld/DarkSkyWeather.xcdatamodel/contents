@@ -7,7 +7,12 @@
         <attribute name="locality" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
+    <entity name="SelectPlace" representedClassName="SelectPlace" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="locality" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="Place" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="SelectPlace" positionX="-63" positionY="18" width="128" height="75"/>
     </elements>
 </model>

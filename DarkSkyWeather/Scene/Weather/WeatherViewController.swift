@@ -108,16 +108,12 @@ extension WeatherViewController: UITableViewDelegate {
     
     private func configureRx() {
         
-        router?.dataStore?.currentPlacemark
+        router?.dataStore?.savedPlacemarks
             .skip(1)
-            .asObservable()
             .distinctUntilChanged()
-            .subscribe(onNext: { [weak self](placeMark) in
+            .subscribe(onNext: { [weak self](savedPlacemarks) in
                 guard let self = self else { return }
-                
-                print(placeMark)
-                
-                self.interactor?.doSavedPlaces()
+
                 
 //                // 저장되어 있는 장소가 없을 경우만 현재 위치정보로 날씨 정보 요청
 //                if self.router?.dataStore?.recentPlace == nil {
@@ -144,8 +140,8 @@ extension WeatherViewController {
 extension WeatherViewController {
     
     // 검색한 정보
-    func selectedLocation(mkMapItem: MKMapItem) {
+    func selectedPlace(mkMapItem: MKMapItem) {
         self.doDarkSkyWeather(placeMark: mkMapItem.placemark)
-        self.interactor?.doSaveLocation(mkMapItem: mkMapItem)
+        self.interactor?.doSavePlace(mkMapItem: mkMapItem)
     }
 }

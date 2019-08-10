@@ -20,12 +20,15 @@ protocol WeatherBusinessLogic {
     func doCurrentLocation()
     func doSavedPlaces()
     func doDarkSkyWeather(request: Weather.Info.Request)
-    func doSaveLocation(mkMapItem: MKMapItem)
+    func doSavePlace(mkMapItem: MKMapItem)
+    func doDeletePlace(index: Int)
 }
 
 protocol WeatherDataStore {
     var currentPlacemark: BehaviorRelay<MKPlacemark?> { get set }
+    var savedPlacemarks: BehaviorRelay<[MKPlacemark]?> { get set }
     var savedPlaces: [Place]? { get set }
+    var savedSelectedPlace: SelectPlace? { get set }
 }
 
 class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, MapKitProtocol {
@@ -33,7 +36,9 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
     var presenter: WeatherPresentationLogic?
     var worker = WeatherWorker()
     var currentPlacemark = BehaviorRelay<MKPlacemark?>(value: nil)
+    var savedPlacemarks = BehaviorRelay<[MKPlacemark]?>(value: nil)
     var savedPlaces: [Place]? = nil
+    var savedSelectedPlace: SelectPlace? = nil
     
     let disposeBag = DisposeBag()
     
@@ -74,39 +79,66 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
     }
     
     // 최근 검색정보저장
-    func doSaveLocation(mkMapItem: MKMapItem) {
-        worker.requestSaveLocation(mkMapItem: mkMapItem)
-            .subscribe(onSuccess: { (value) in
-                if !value {
-                    print("Failed saving")
-                }
-            })
-            .disposed(by: disposeBag)
-            
+    func doSavePlace(mkMapItem: MKMapItem) {
+        PlaceManager.shared.savePlace(mkMapItem: mkMapItem)
     }
-}
-
-extension WeatherInteractor {
     
-    func resultPlaces(place: [Place]?) {
+    // 선택한 장소삭제
+    func doDeletePlace(index: Int) {
         
-            // 저장되어 있는 장소로 정보 날씨 요청
-//
-//            let request = Weather.Info.Request(placeMark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: place.latitude, longitude: place.longitude),
-//                                                                      addressDictionary: [CNPostalAddressCityKey:place.locality ?? ""]),
-//                                               keyword: place.keyword ?? "")
-//            
-//            self.doDarkSkyWeather(request: request)
-//            self.recentPlace = place
-//        }
-//        self.getCurrentLocation()
+        if let savedPlaces = self.savedPlaces {
+            PlaceManager.shared.deletePlace(place: savedPlaces[index])
+        }
     }
 }
 
 extension WeatherInteractor {
     
-    // 현재위치 정보
-    func updateLocation(placeMark: MKPlacemark?) {
-        self.currentPlacemark.accept(placeMark)
+    // 현재위치 정보 결과
+    func updateLocation(placemark: MKPlacemark?) {
+        print("currentPlaceMark = \(placemark)")
+        self.currentPlacemark.accept(placemark)
+        self.doSavedPlaces()
     }
 }
+
+
+extension WeatherInteractor {
+    
+    // 저장되어 있는 장소들
+    func savedPlaces(places: [Place]?) {
+        print("savedPlacemarks")
+        print(places)
+        self.savedPlaces = places
+        
+        if let places = places {
+            self.savedPlacemarks.accept(places.compactMap{
+                MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: $0.latitude,
+                                                               longitude: $0.longitude),
+                            addressDictionary: [CNPostalAddressCityKey:$0.locality ?? ""])})
+        } else {
+            self.savedPlacemarks.accept(nil)
+        }
+    }
+    
+    // 장소 저장 결과
+    func savePlace(place: Place, complete: Bool) {
+        if complete {
+            self.doSavedPlaces()
+//            PlaceManager.shared.saveSelectedPlace(place: place)
+        }
+    }
+    
+    // 장소 삭제 결과
+    func deletePlace(complete: Bool) {
+        if complete {
+            self.doSavedPlaces()
+        }
+    }
+    
+    // 선택한 장소
+    func savedSelectedPlace(place: SelectPlace?) {
+        self.savedSelectedPlace = place
+    }
+}
+

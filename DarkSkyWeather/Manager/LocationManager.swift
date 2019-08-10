@@ -10,13 +10,13 @@ import Foundation
 import MapKit
 
 protocol MapKitProtocol: class {
-    func updateLocation(placeMark: MKPlacemark?)
-    func selectedLocation(mkMapItem: MKMapItem)
+    func updateLocation(placemark: MKPlacemark?)
+    func selectedPlace(mkMapItem: MKMapItem)
 }
 
 extension MapKitProtocol {
-    func updateLocation(placeMark: MKPlacemark?) {}
-    func selectedLocation(mkMapItem: MKMapItem) {}
+    func updateLocation(placemark: MKPlacemark?) {}
+    func selectedPlace(mkMapItem: MKMapItem) {}
 }
 
 class LocationManager: NSObject {
@@ -59,7 +59,7 @@ extension LocationManager: CLLocationManagerDelegate {
     
     internal func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error:: \(error)")
-        self.mapKitDelegate?.updateLocation(placeMark: nil)
+        self.mapKitDelegate?.updateLocation(placemark: nil)
     }
 }
 
@@ -73,7 +73,7 @@ extension LocationManager {
             
             guard let placemark = placemarks?.first else { return }
             
-            self.mapKitDelegate?.updateLocation(placeMark: MKPlacemark(placemark: placemark))
+            self.mapKitDelegate?.updateLocation(placemark: MKPlacemark(placemark: placemark))
         }
     }
 }
