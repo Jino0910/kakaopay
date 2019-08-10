@@ -18,12 +18,14 @@ protocol WeatherInfoBusinessLogic {
 }
 
 protocol WeatherInfoDataStore {
+    var pageIndex: Int { get set }
     var placemark: MKPlacemark? { get set }
 }
 
 class WeatherInfoInteractor: WeatherInfoBusinessLogic, WeatherInfoDataStore {
     var presenter: WeatherInfoPresentationLogic?
     var worker: WeatherInfoWorker?
+    var pageIndex: Int = 0
     var placemark: MKPlacemark? = nil
     
     // MARK: Do something

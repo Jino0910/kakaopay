@@ -17,6 +17,7 @@ protocol WeatherInfoDisplayLogic: class {
 }
 
 class WeatherInfoViewController: UIViewController, WeatherInfoDisplayLogic {
+    
     var interactor: WeatherInfoBusinessLogic?
     var router: (NSObjectProtocol & WeatherInfoRoutingLogic & WeatherInfoDataPassing)?
     
@@ -68,8 +69,11 @@ class WeatherInfoViewController: UIViewController, WeatherInfoDisplayLogic {
     }
     
     // MARK: Do something
+    
+    var weatherPresentationDelegate: WeatherPresentationLogic?
     @IBOutlet weak var label: UILabel!
     
+
     //@IBOutlet weak var nameTextField: UITextField!
     
     func doSomething() {

@@ -17,7 +17,7 @@ import UIKit
 }
 
 protocol WeatherInfoDataPassing {
-    var dataStore: WeatherInfoDataStore? { get }
+    var dataStore: WeatherInfoDataStore? { get set }
 }
 
 class WeatherInfoRouter: NSObject, WeatherInfoRoutingLogic, WeatherInfoDataPassing {

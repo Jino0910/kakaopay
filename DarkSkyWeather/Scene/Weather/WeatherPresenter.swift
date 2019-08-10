@@ -15,6 +15,7 @@ import MapKit
 
 protocol WeatherPresentationLogic {
     func presentDrawDarkSkyWeathers(response: Weather.Info.Response)
+    func presentAddDarkSkyWeather(response: Weather.AddPlace.Response)
 }
 
 class WeatherPresenter: WeatherPresentationLogic {
@@ -24,22 +25,30 @@ class WeatherPresenter: WeatherPresentationLogic {
     
     func presentDrawDarkSkyWeathers(response: Weather.Info.Response) {
         
-        var vcs: [WeatherInfoViewController] = []
+        var weathers: [WeatherInfoViewController] = []
         
         // 현재위치
         if let placemark = response.currentPlacemark {
-            vcs.append(self.getWeathersViewController(placemark: placemark))
+            weathers.append(self.getWeathersViewController(placemark: placemark))
         }
         
         // 저장된 장소
         if let placemarks = response.savedPlacemarks {
-            vcs += placemarks.compactMap({ (placemarker) -> WeatherInfoViewController in
+            weathers += placemarks.compactMap({ (placemarker) -> WeatherInfoViewController in
                 self.getWeathersViewController(placemark: placemarker)
             })
         }
         
-        let viewModel = Weather.Info.ViewModel(weathers: vcs)
+        let viewModel = Weather.Info.ViewModel(weathers: weathers, selectedIndex: response.selectedIndex)
         viewController?.displayDrawDarkSkyWeathers(viewModel: viewModel)
+    }
+    
+    func presentAddDarkSkyWeather(response: Weather.AddPlace.Response) {
+        
+        let weather = self.getWeathersViewController(placemark: response.placemark)
+        
+        let viewModel = Weather.AddPlace.ViewModel(weather: weather)
+        viewController?.displayAddDarkSkyWeather(viewModel: viewModel)
     }
 }
 
@@ -56,10 +65,4 @@ extension WeatherPresenter {
     func passDataToWeatherInfo(placemark: MKPlacemark, destination: inout WeatherInfoDataStore) {
         destination.placemark = placemark
     }
-}
-
-extension WeatherPresenter {
-    
-    
-    
 }

@@ -22,6 +22,7 @@ protocol WeatherBusinessLogic {
     func doDrawDarkSkyWeathers()
     func doSavePlace(mkMapItem: MKMapItem)
     func doDeletePlace(index: Int)
+    func doSaveSelectedPlace(index: Int)
 }
 
 protocol WeatherDataStore {
@@ -48,18 +49,18 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
     func doCurrentLocation() {
         locationManager.getCurrentLocation()
         locationManager.mapKitDelegate = self
+        PlaceManager.shared.placeDelegate = self
     }
     
     // 저장된 장소정보
     func doSavedPlaces() {
-        PlaceManager.shared.placeDelegate = self
         PlaceManager.shared.getSearchPlaces()
     }
     
     // 날씨 화면
     func doDrawDarkSkyWeathers() {
     
-        let response = Weather.Info.Response(currentPlacemark: currentPlacemark.value, savedPlacemarks: savedPlacemarks.value)
+        let response = Weather.Info.Response(currentPlacemark: currentPlacemark.value, savedPlacemarks: savedPlacemarks.value, selectedIndex: self.selectedIndex())
         self.presenter?.presentDrawDarkSkyWeathers(response: response)
 //        if let apiKey = Bundle.main.infoDictionary?["DarkSkySecretKey"] as? String {
 //            worker.requestDarkSkyWeather(apiKey: apiKey, coordinate: request.placeMark.coordinate)
@@ -80,6 +81,12 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
 //        }
     }
     
+    func doAddDarkSkyWeather(placemark: MKPlacemark) {
+        
+        let response = Weather.AddPlace.Response(placemark: placemark)
+        self.presenter?.presentAddDarkSkyWeather(response: response)
+    }
+    
     // 최근 검색정보저장
     func doSavePlace(mkMapItem: MKMapItem) {
         PlaceManager.shared.savePlace(mkMapItem: mkMapItem)
@@ -87,10 +94,46 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
     
     // 선택한 장소삭제
     func doDeletePlace(index: Int) {
-        
         if let savedPlaces = self.savedPlaces {
             PlaceManager.shared.deletePlace(place: savedPlaces[index])
         }
+    }
+    
+    // 선택한 장소저장
+    func doSaveSelectedPlace(index: Int) {
+        if !(currentPlacemark.value == nil && index == 0) {
+            let index: Int = index - (currentPlacemark.value != nil ? 1 : 0)
+            if let savedPlaces = self.savedPlaces {
+                print(savedPlaces[index])
+                PlaceManager.shared.saveSelectedPlace(place: savedPlaces[index])
+            }
+        }
+    }
+}
+
+extension WeatherInteractor {
+    
+    func selectedIndex() -> Int {
+
+        guard let savedSelectedPlace = self.savedSelectedPlace else { return 0 }
+        guard let savedDate = savedSelectedPlace.date else { return 0 }
+        
+        var selectedIndex = 0
+        if let savedPlaces = savedPlaces {
+
+            // 저장된 장소의 인덱스 구하기
+            selectedIndex = savedPlaces.firstIndex { (place) -> Bool in
+
+                if let placeDate = place.date, placeDate == savedDate {
+                    return true
+                } else {
+                    return false
+                }
+                } ?? 0
+            return selectedIndex + (currentPlacemark.value == nil ? 0 : 1)
+        }
+
+        return selectedIndex
     }
 }
 
@@ -98,22 +141,21 @@ extension WeatherInteractor {
     
     // 현재위치 정보 결과
     func updateLocation(placemark: MKPlacemark?) {
-        print("currentPlaceMark = \(placemark)")
+//        print("currentPlaceMark = \(placemark)")
         self.currentPlacemark.accept(placemark)
-        // 저장된 장소들
-        self.doSavedPlaces()
         // 최근 선택된 장소
         PlaceManager.shared.getSelectedPlace()
+        // 저장된 장소들
+        self.doSavedPlaces()
     }
 }
-
 
 extension WeatherInteractor {
     
     // 저장되어 있는 장소들
     func savedPlaces(places: [Place]?) {
-        print("savedPlacemarks")
-        print(places)
+//        print("savedPlacemarks")
+//        print(places)
         self.savedPlaces = places
         
         if let places = places {
@@ -127,10 +169,16 @@ extension WeatherInteractor {
     }
     
     // 장소 저장 결과
-    func savePlace(place: Place, complete: Bool) {
-        if complete {
+    func savePlace(place: Place?, complete: Bool) {
+        if complete, let place = place {
+            // 선택한 장소 저장
+            PlaceManager.shared.saveSelectedPlace(place: place)
+            // 추가한 장소정보 동기화
             self.doSavedPlaces()
-//            PlaceManager.shared.saveSelectedPlace(place: place)
+            // 추가한 장소 화면 추가
+            self.doAddDarkSkyWeather(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: place.latitude,
+                                                                                                longitude: place.longitude),
+                                                             addressDictionary: [CNPostalAddressCityKey:place.locality ?? ""]))
         }
     }
     

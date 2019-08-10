@@ -17,6 +17,7 @@ import MapKit
 
 protocol WeatherDisplayLogic: class {
     func displayDrawDarkSkyWeathers(viewModel: Weather.Info.ViewModel)
+    func displayAddDarkSkyWeather(viewModel: Weather.AddPlace.ViewModel)
 }
 
 class WeatherViewController: UIViewController, WeatherDisplayLogic, MapKitProtocol {
@@ -77,16 +78,31 @@ class WeatherViewController: UIViewController, WeatherDisplayLogic, MapKitProtoc
     var searchController: UISearchController!
     let searchTableViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "LocationSearchTableViewController") as! LocationSearchTableViewController
     let pageViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "PageViewController") as! UIPageViewController
-    var weathers: [WeatherInfoViewController]? = []
+    var weathers: [WeatherInfoViewController] = []
     
     func displayDrawDarkSkyWeathers(viewModel: Weather.Info.ViewModel) {
         
-        weathers = viewModel.weathers
+        if let weathers = viewModel.weathers {
+            self.weathers = weathers
+            self.setWeatherViewTag()
+            
+            self.pageViewController.setViewControllers([self.weathers[viewModel.selectedIndex]], direction: .forward, animated: false, completion: { (_) in
+            })
+        }
         
-        if let weather = weathers?.first {
+        
+    }
+    
+    func displayAddDarkSkyWeather(viewModel: Weather.AddPlace.ViewModel) {
+        
+        self.weathers.append(viewModel.weather)
+        self.setWeatherViewTag()
+
+        if let weather = self.weathers.last {
             self.pageViewController.setViewControllers([weather], direction: .forward, animated: false, completion: { (_) in
             })
         }
+    
     }
 }
 
@@ -113,6 +129,7 @@ extension WeatherViewController {
         definesPresentationContext = true
         
     
+        self.pageViewController.delegate = self
         self.pageViewController.dataSource = self
         self.addChild(self.pageViewController)
         self.view.addSubview(self.pageViewController.view)
@@ -123,7 +140,7 @@ extension WeatherViewController {
         
         router?.dataStore?.savedPlacemarks
             .skip(1)
-            .distinctUntilChanged()
+            .take(1)
             .subscribe(onNext: { [weak self](savedPlacemarks) in
                 guard let self = self else { return }
 
@@ -140,6 +157,13 @@ extension WeatherViewController {
             })
             .disposed(by: disposeBag)
     }
+    
+    private func setWeatherViewTag() {
+        
+        for (index, weather) in self.weathers.enumerated() {
+            weather.router?.dataStore?.pageIndex = index
+        }
+    }
 }
 
 extension WeatherViewController {
@@ -154,25 +178,41 @@ extension WeatherViewController {
     
     // 검색한 정보
     func selectedPlace(mkMapItem: MKMapItem) {
-//        self.doDarkSkyWeather(placeMark: mkMapItem.placemark)
-//        self.interactor?.doSavePlace(mkMapItem: mkMapItem)
+        self.interactor?.doSavePlace(mkMapItem: mkMapItem)
     }
 }
 
 extension WeatherViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let weathers = self.weathers else { return nil }
-        guard let index = weathers.index(of: viewController as! WeatherInfoViewController) else { return nil }
-        print(index)
+        guard self.weathers.count > 0 else { return nil }
+        guard let index = self.weathers.firstIndex(of: viewController as! WeatherInfoViewController) else { return nil }
+//        print(index)
         guard index != 0 else { return nil }
-        return weathers[index - 1]
+        return self.weathers[index - 1]
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let weathers = self.weathers else { return nil }
-        guard let index = weathers.index(of: viewController as! WeatherInfoViewController) else { return nil }
-        print(index)
-        guard weathers.count > index + 1 else { return nil }
-        return weathers[index + 1]
+        guard self.weathers.count > 0 else { return nil }
+        guard let index = self.weathers.firstIndex(of: viewController as! WeatherInfoViewController) else { return nil }
+//        print(index)
+        guard self.weathers.count > index + 1 else { return nil }
+        return self.weathers[index + 1]
+    }
+}
+
+extension WeatherViewController: UIPageViewControllerDelegate {
+    
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        
+        if let viewController = pendingViewControllers[0] as? WeatherInfoViewController {
+            if let index = viewController.router?.dataStore?.pageIndex {
+                self.interactor?.doSaveSelectedPlace(index: index)
+            }
+        }
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+//        guard completed else { return }
+//        print(pageViewController.viewControllers!.first!.view.tag)
     }
 }

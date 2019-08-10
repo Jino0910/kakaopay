@@ -16,7 +16,7 @@ import Contacts
 protocol PlaceProtocol: class {
     
     func savedPlaces(places: [Place]?)
-    func savePlace(complete: Bool)
+    func savePlace(place: Place?, complete: Bool)
     func deletePlace(complete: Bool)
     func savedSelectedPlace(place: SelectPlace?)
 }
@@ -24,7 +24,7 @@ protocol PlaceProtocol: class {
 extension PlaceProtocol {
     
     func savedPlaces(places: [Place]?) {}
-    func savePlace(complete: Bool) {}
+    func savePlace(place: Place?, complete: Bool) {}
     func deletePlace(complete: Bool) {}
     func savedSelectedPlace(place: SelectPlace?) {}
 }
@@ -65,9 +65,9 @@ class PlaceManager: NSObject {
         
         do {
             try self.context.save()
-            placeDelegate?.savePlace(complete: true)
+            placeDelegate?.savePlace(place: place, complete: true)
         } catch {
-            placeDelegate?.savePlace(complete: false)
+            placeDelegate?.savePlace(place: nil, complete: false)
         }
     }
     
@@ -111,7 +111,7 @@ class PlaceManager: NSObject {
         let entityKey: String = "SelectPlace"
         let selectPlace = NSEntityDescription.insertNewObject(forEntityName: entityKey, into: self.context) as! SelectPlace
         
-        selectPlace.date = NSDate()
+        selectPlace.date = place.date
         selectPlace.locality = place.locality
         
         do {

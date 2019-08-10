@@ -22,9 +22,22 @@ enum Weather {
         struct Response {
             var currentPlacemark: MKPlacemark?
             var savedPlacemarks: [MKPlacemark]?
+            var selectedIndex: Int
         }
         struct ViewModel {
             var weathers: [WeatherInfoViewController]?
+            var selectedIndex: Int
+        }
+    }
+    
+    enum AddPlace {
+        struct Request {
+        }
+        struct Response {
+            var placemark: MKPlacemark
+        }
+        struct ViewModel {
+            var weather: WeatherInfoViewController
         }
     }
 }
