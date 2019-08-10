@@ -38,6 +38,41 @@
             </objects>
             <point key="canvasLocation" x="238" y="925"/>
         </scene>
+        <!--Page View Controller-->
+        <scene sceneID="642-4n-z6q">
+            <objects>
+                <pageViewController storyboardIdentifier="PageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="wVL-20-gZ9" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="J0Q-3o-o36" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1065" y="925"/>
+        </scene>
+        <!--Weather Info View Controller-->
+        <scene sceneID="VBE-78-ffi">
+            <objects>
+                <viewController storyboardIdentifier="WeatherInfoViewController" id="Dqu-fU-8xW" customClass="WeatherInfoViewController" customModule="DarkSkyWeather" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="flC-vh-fWp">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dh8-ba-T46">
+                                <rect key="frame" x="186" y="189" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="gLP-ss-BaB"/>
+                    </view>
+                    <connections>
+                        <outlet property="label" destination="Dh8-ba-T46" id="iqU-mM-btH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eZ3-0b-QGl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1904" y="925"/>
+        </scene>
         <!--Location Search Table View Controller-->
         <scene sceneID="dqu-nA-Fzw">
             <objects>
@@ -80,7 +115,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D7V-CP-MSi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1075" y="925"/>
+            <point key="canvasLocation" x="238" y="169"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="5qK-ZX-JLh">

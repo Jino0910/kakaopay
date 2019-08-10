@@ -19,7 +19,7 @@ import Contacts
 protocol WeatherBusinessLogic {
     func doCurrentLocation()
     func doSavedPlaces()
-    func doDarkSkyWeather(request: Weather.Info.Request)
+    func doDrawDarkSkyWeathers()
     func doSavePlace(mkMapItem: MKMapItem)
     func doDeletePlace(index: Int)
 }
@@ -56,26 +56,28 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
         PlaceManager.shared.getSearchPlaces()
     }
     
-    // 날씨 정보 요청
-    func doDarkSkyWeather(request: Weather.Info.Request) {
+    // 날씨 화면
+    func doDrawDarkSkyWeathers() {
     
-        if let apiKey = Bundle.main.infoDictionary?["DarkSkySecretKey"] as? String {
-            worker.requestDarkSkyWeather(apiKey: apiKey, coordinate: request.placeMark.coordinate)
-                .filter{$0.code == .code200}
-                .subscribe(onSuccess: { (code, json) in
-                    
-                    let model = DarkSkyWeatherModel(data: json)
-                    
-                    print(request.keyword)
-                    print(request.placeMark.locality ?? "")
-                    print(model.latitude)
-                    print(model.longitude)
-                    
-                    let response = Weather.Info.Response(weatherModel: model, keyword: request.keyword)
-                    self.presenter?.presentDarkSkyWeather(response: response)
-                })
-                .disposed(by: disposeBag)
-        }
+        let response = Weather.Info.Response(currentPlacemark: currentPlacemark.value, savedPlacemarks: savedPlacemarks.value)
+        self.presenter?.presentDrawDarkSkyWeathers(response: response)
+//        if let apiKey = Bundle.main.infoDictionary?["DarkSkySecretKey"] as? String {
+//            worker.requestDarkSkyWeather(apiKey: apiKey, coordinate: request.placeMark.coordinate)
+//                .filter{$0.code == .code200}
+//                .subscribe(onSuccess: { (code, json) in
+//
+//                    let model = DarkSkyWeatherModel(data: json)
+//
+//                    print(request.keyword)
+//                    print(request.placeMark.locality ?? "")
+//                    print(model.latitude)
+//                    print(model.longitude)
+//
+//                    let response = Weather.Info.Response(weatherModel: model, keyword: request.keyword)
+//                    self.presenter?.presentDarkSkyWeather(response: response)
+//                })
+//                .disposed(by: disposeBag)
+//        }
     }
     
     // 최근 검색정보저장
@@ -98,7 +100,10 @@ extension WeatherInteractor {
     func updateLocation(placemark: MKPlacemark?) {
         print("currentPlaceMark = \(placemark)")
         self.currentPlacemark.accept(placemark)
+        // 저장된 장소들
         self.doSavedPlaces()
+        // 최근 선택된 장소
+        PlaceManager.shared.getSelectedPlace()
     }
 }
 

@@ -16,7 +16,7 @@ import RxCocoa
 import MapKit
 
 protocol WeatherDisplayLogic: class {
-    func displayDarkSkyWeather(viewModel: Weather.Info.ViewModel)
+    func displayDrawDarkSkyWeathers(viewModel: Weather.Info.ViewModel)
 }
 
 class WeatherViewController: UIViewController, WeatherDisplayLogic, MapKitProtocol {
@@ -76,14 +76,21 @@ class WeatherViewController: UIViewController, WeatherDisplayLogic, MapKitProtoc
     
     var searchController: UISearchController!
     let searchTableViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "LocationSearchTableViewController") as! LocationSearchTableViewController
+    let pageViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "PageViewController") as! UIPageViewController
+    var weathers: [WeatherInfoViewController]? = []
     
-    
-    func displayDarkSkyWeather(viewModel: Weather.Info.ViewModel) {
-    
+    func displayDrawDarkSkyWeathers(viewModel: Weather.Info.ViewModel) {
+        
+        weathers = viewModel.weathers
+        
+        if let weather = weathers?.first {
+            self.pageViewController.setViewControllers([weather], direction: .forward, animated: false, completion: { (_) in
+            })
+        }
     }
 }
 
-extension WeatherViewController: UITableViewDelegate {
+extension WeatherViewController {
     
     private func configure() {
         configureUI()
@@ -104,6 +111,12 @@ extension WeatherViewController: UITableViewDelegate {
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.dimsBackgroundDuringPresentation = true
         definesPresentationContext = true
+        
+    
+        self.pageViewController.dataSource = self
+        self.addChild(self.pageViewController)
+        self.view.addSubview(self.pageViewController.view)
+        self.pageViewController.didMove(toParent: self)
     }
     
     private func configureRx() {
@@ -114,10 +127,10 @@ extension WeatherViewController: UITableViewDelegate {
             .subscribe(onNext: { [weak self](savedPlacemarks) in
                 guard let self = self else { return }
 
-                
+                self.interactor?.doDrawDarkSkyWeathers()
 //                // 저장되어 있는 장소가 없을 경우만 현재 위치정보로 날씨 정보 요청
 //                if self.router?.dataStore?.recentPlace == nil {
-//                    self.doDarkSkyWeather(placeMark: placeMark)
+//                    self.doDarkSkyWeather()
 //                }
 //
 //                // 검색 테이블에 현재 위치 셋 (검색 리스트 거리별순 정렬 위해)
@@ -132,8 +145,8 @@ extension WeatherViewController: UITableViewDelegate {
 extension WeatherViewController {
     
     private func doDarkSkyWeather(placeMark: MKPlacemark) {
-        let request = Weather.Info.Request(placeMark: placeMark, keyword: placeMark.name ?? "")
-        self.interactor?.doDarkSkyWeather(request: request)
+//        let request = Weather.Info.Request(placeMark: placeMark, keyword: placeMark.name ?? "")
+//        self.interactor?.doDarkSkyWeather(request: request)
     }
 }
 
@@ -141,7 +154,25 @@ extension WeatherViewController {
     
     // 검색한 정보
     func selectedPlace(mkMapItem: MKMapItem) {
-        self.doDarkSkyWeather(placeMark: mkMapItem.placemark)
-        self.interactor?.doSavePlace(mkMapItem: mkMapItem)
+//        self.doDarkSkyWeather(placeMark: mkMapItem.placemark)
+//        self.interactor?.doSavePlace(mkMapItem: mkMapItem)
+    }
+}
+
+extension WeatherViewController: UIPageViewControllerDataSource {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        guard let weathers = self.weathers else { return nil }
+        guard let index = weathers.index(of: viewController as! WeatherInfoViewController) else { return nil }
+        print(index)
+        guard index != 0 else { return nil }
+        return weathers[index - 1]
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        guard let weathers = self.weathers else { return nil }
+        guard let index = weathers.index(of: viewController as! WeatherInfoViewController) else { return nil }
+        print(index)
+        guard weathers.count > index + 1 else { return nil }
+        return weathers[index + 1]
     }
 }

@@ -16,7 +16,7 @@ import Contacts
 protocol PlaceProtocol: class {
     
     func savedPlaces(places: [Place]?)
-    func savePlace(place: Place, complete: Bool)
+    func savePlace(complete: Bool)
     func deletePlace(complete: Bool)
     func savedSelectedPlace(place: SelectPlace?)
 }
@@ -83,11 +83,11 @@ class PlaceManager: NSObject {
 
     }
     
-    func getSelectedPlace(place: Place) {
+    func getSelectedPlace() {
         
         let entityKey: String = "SelectPlace"
         let request = NSFetchRequest<SelectPlace>(entityName: entityKey)
-        request.predicate = NSPredicate(format: "date == %@ AND locality == %@ ", place.date ?? "", place.locality ?? "")
+//        request.predicate = NSPredicate(format: "date == %@ AND locality == %@ ", place.date ?? "", place.locality ?? "")
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         request.returnsObjectsAsFaults = false
         
