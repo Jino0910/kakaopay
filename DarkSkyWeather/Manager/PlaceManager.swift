@@ -36,10 +36,15 @@ class PlaceManager: NSObject {
     weak var placeDelegate: PlaceProtocol?
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
+    enum EntiryKey: String {
+        case place = "Place"
+        case selectPlace = "SelectPlace"
+    }
+    
     func getSearchPlaces() {
         
-        let entityKey: String = "Place"
-        let request = NSFetchRequest<Place>(entityName: entityKey)
+        
+        let request = NSFetchRequest<Place>(entityName: EntiryKey.place.rawValue)
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
         request.returnsObjectsAsFaults = false
         
@@ -48,14 +53,14 @@ class PlaceManager: NSObject {
             let places = try context.fetch(request)
             placeDelegate?.savedPlaces(places: places)
         } catch {
+            print(error)
             placeDelegate?.savedPlaces(places: nil)
         }
     }
     
     func savePlace(mkMapItem: MKMapItem){
         
-        let entityKey: String = "Place"
-        let place = NSEntityDescription.insertNewObject(forEntityName: entityKey, into: self.context) as! Place
+        let place = NSEntityDescription.insertNewObject(forEntityName: EntiryKey.place.rawValue, into: self.context) as! Place
         
         place.date = NSDate()
         place.keyword = mkMapItem.name
@@ -67,6 +72,7 @@ class PlaceManager: NSObject {
             try self.context.save()
             placeDelegate?.savePlace(place: place, complete: true)
         } catch {
+            print(error)
             placeDelegate?.savePlace(place: nil, complete: false)
         }
     }
@@ -78,6 +84,7 @@ class PlaceManager: NSObject {
             try self.context.save()
             placeDelegate?.deletePlace(complete: true)
         } catch {
+            print(error)
             placeDelegate?.deletePlace(complete: false)
         }
 
@@ -85,8 +92,7 @@ class PlaceManager: NSObject {
     
     func getSelectedPlace() {
         
-        let entityKey: String = "SelectPlace"
-        let request = NSFetchRequest<SelectPlace>(entityName: entityKey)
+        let request = NSFetchRequest<SelectPlace>(entityName: EntiryKey.selectPlace.rawValue)
 //        request.predicate = NSPredicate(format: "date == %@ AND locality == %@ ", place.date ?? "", place.locality ?? "")
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
         request.returnsObjectsAsFaults = false
@@ -102,14 +108,16 @@ class PlaceManager: NSObject {
             }
             
         } catch {
+            print(error)
             placeDelegate?.savedSelectedPlace(place: nil)
         }
     }
     
     func saveSelectedPlace(place: Place) {
         
-        let entityKey: String = "SelectPlace"
-        let selectPlace = NSEntityDescription.insertNewObject(forEntityName: entityKey, into: self.context) as! SelectPlace
+        self.deleteSelectedPlace()
+        
+        let selectPlace = NSEntityDescription.insertNewObject(forEntityName: EntiryKey.selectPlace.rawValue, into: self.context) as! SelectPlace
         
         selectPlace.date = place.date
         selectPlace.locality = place.locality
@@ -117,6 +125,19 @@ class PlaceManager: NSObject {
         do {
             try self.context.save()
         } catch {
+            print(error)
+        }
+    }
+    
+    func deleteSelectedPlace() {
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: EntiryKey.selectPlace.rawValue)
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
+        
+        do {
+            try context.execute(deleteRequest)
+        } catch {
+            print(error)
         }
     }
 }

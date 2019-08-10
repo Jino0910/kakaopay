@@ -82,7 +82,7 @@ class WeatherViewController: UIViewController, WeatherDisplayLogic, MapKitProtoc
     
     func displayDrawDarkSkyWeathers(viewModel: Weather.Info.ViewModel) {
         
-        if let weathers = viewModel.weathers {
+        if let weathers = viewModel.weathers, !weathers.isEmpty {
             self.weathers = weathers
             self.setWeatherViewTag()
             
@@ -143,17 +143,18 @@ extension WeatherViewController {
             .take(1)
             .subscribe(onNext: { [weak self](savedPlacemarks) in
                 guard let self = self else { return }
-
                 self.interactor?.doDrawDarkSkyWeathers()
-//                // 저장되어 있는 장소가 없을 경우만 현재 위치정보로 날씨 정보 요청
-//                if self.router?.dataStore?.recentPlace == nil {
-//                    self.doDarkSkyWeather()
-//                }
-//
-//                // 검색 테이블에 현재 위치 셋 (검색 리스트 거리별순 정렬 위해)
-//                if let location = placeMark.location {
-//                    self.searchTableViewController.location = location
-//                }
+            })
+            .disposed(by: disposeBag)
+        
+        router?.dataStore?.currentPlacemark
+            .skip(1)
+            .subscribe(onNext: { [weak self](currentPlacemark) in
+                guard let self = self else { return }
+                // 검색 테이블에 현재 위치 셋 (검색 리스트 거리별순 정렬 위해)
+                if let coordinate = currentPlacemark?.coordinate {
+                    self.searchTableViewController.location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                }
             })
             .disposed(by: disposeBag)
     }

@@ -81,6 +81,7 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
 //        }
     }
     
+    // 장소추가
     func doAddDarkSkyWeather(placemark: MKPlacemark) {
         
         let response = Weather.AddPlace.Response(placemark: placemark)
@@ -101,9 +102,12 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
     
     // 선택한 장소저장
     func doSaveSelectedPlace(index: Int) {
-        if !(currentPlacemark.value == nil && index == 0) {
+        if !(currentPlacemark.value != nil && index == 0) {
             let index: Int = index - (currentPlacemark.value != nil ? 1 : 0)
             if let savedPlaces = self.savedPlaces {
+                
+                print("savedPlaces = \(savedPlaces)")
+                print("index = \(index)")
                 print(savedPlaces[index])
                 PlaceManager.shared.saveSelectedPlace(place: savedPlaces[index])
             }
