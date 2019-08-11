@@ -15,15 +15,15 @@ import UIKit
 enum WeatherInfo {
     // MARK: Use cases
     
-    enum Something {
+    enum Info {
         struct Request {
             
         }
         struct Response {
-            
+            var weatherModel: DarkSkyWeatherModel
         }
         struct ViewModel {
-            
+            var sectionModels: [WeatherSectionModel]
         }
     }
 }

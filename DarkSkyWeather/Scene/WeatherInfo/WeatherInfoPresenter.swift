@@ -13,7 +13,7 @@
 import UIKit
 
 protocol WeatherInfoPresentationLogic {
-    func presentSomething(response: WeatherInfo.Something.Response)
+    func presentDrawWeather(response: WeatherInfo.Info.Response)
 }
 
 class WeatherInfoPresenter: WeatherInfoPresentationLogic {
@@ -21,9 +21,63 @@ class WeatherInfoPresenter: WeatherInfoPresentationLogic {
     
     // MARK: Do something
     
-    func presentSomething(response: WeatherInfo.Something.Response) {
-        let viewModel = WeatherInfo.Something.ViewModel()
-        viewController?.displaySomething(viewModel: viewModel)
+    func presentDrawWeather(response: WeatherInfo.Info.Response) {
+        let viewModel = WeatherInfo.Info.ViewModel(sectionModels: self.getSectionModels(weatherModel: response.weatherModel))
+        viewController?.displayDrawWeather(viewModel: viewModel)
+    }
+}
+
+extension WeatherInfoPresenter {
+    
+    func getSectionModels(weatherModel: DarkSkyWeatherModel) -> [WeatherSectionModel] {
+        
+        var items: [WeatherItem] = []
+        
+        items.append(.init(type: .currently, object: weatherModel))
+
+        
+        weatherModel.daily.weathers.forEach { (weather) in
+            items.append(.init(type: .daily(index: "\(weather.time)"), object: weather))
+        }
+        
+        if let sunrise = weatherModel.daily.weathers.first?.sunriseTime?.unixTimeToDate().toString(format: "a hh:mm"),
+            let sunset = weatherModel.daily.weathers.first?.sunsetTime?.unixTimeToDate().toString(format: "a hh:mm") {
+            items.append(.init(type: .description(index: "1"), object:
+            WeatherDescription(title1: "일출", content1: sunrise,
+                               title2: "일몰", content2: sunset)))
+        }
+        
+        if let precipProbability = weatherModel.currently.precipProbability,
+            let humidity = weatherModel.currently.humidity {
+            items.append(.init(type: .description(index: "2"), object:
+                WeatherDescription(title1: "비 올 확률", content1: "\(precipProbability*100)%",
+                    title2: "습도", content2: "\(humidity*100)%")))
+        }
+        
+        if let windBearing = weatherModel.currently.windBearing,
+            let windSpeed = weatherModel.currently.windSpeed,
+            let apparentTemperature = weatherModel.currently.apparentTemperature {
+            items.append(.init(type: .description(index: "3"), object:
+                WeatherDescription(title1: "바람", content1: "\(windBearing.degreeToHangul()) \(windSpeed)m/s",
+                    title2: "체감", content2: "\(Int(round(apparentTemperature)))°")))
+        }
+        
+        if let precipIntensity = weatherModel.currently.precipIntensity,
+            let pressure = weatherModel.currently.pressure {
+            items.append(.init(type: .description(index: "4"), object:
+                WeatherDescription(title1: "강수량", content1: "\(Int(precipIntensity*10))cm",
+                    title2: "기압", content2: "\(pressure)hPa")))
+        }
+        
+        if let visibility = weatherModel.currently.visibility,
+            let ozone = weatherModel.currently.ozone {
+            items.append(.init(type: .description(index: "5"), object:
+                WeatherDescription(title1: "가시거리", content1: "\(String(format: "%1.f", visibility))km",
+                    title2: "자외선 지수", content2: "\(ozone)")))
+        }
+        
+        
+        return [WeatherSectionModel(items: items)]
     }
 }
 

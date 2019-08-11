@@ -11,10 +11,14 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import MapKit
 
 class WeatherInfoWorker {
-    func doSomeWork() {
-        
+    
+    func requestDarkSkyWeather(apiKey: String, coordinate: CLLocationCoordinate2D) -> PrimitiveSequence<SingleTrait, APIResponseType> {
+        return APIManager.request(target: .searchDarkSkyWeather(key: apiKey, langtitude: coordinate.latitude, longitude: coordinate.longitude))
     }
 }
 

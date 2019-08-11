@@ -11,6 +11,6 @@ import Foundation
 extension UInt64 {
     
     func unixTimeToDate() -> Date {
-        return Date(timeIntervalSince1970: TimeInterval(self) / 1000)
+        return Date(timeIntervalSince1970: TimeInterval(self))
     }
 }

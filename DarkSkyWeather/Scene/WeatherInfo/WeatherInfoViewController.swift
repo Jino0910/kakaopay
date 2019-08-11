@@ -11,9 +11,13 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import MapKit
+import RxDataSources
 
 protocol WeatherInfoDisplayLogic: class {
-    func displaySomething(viewModel: WeatherInfo.Something.ViewModel)
+    func displayDrawWeather(viewModel: WeatherInfo.Info.ViewModel)
 }
 
 class WeatherInfoViewController: UIViewController, WeatherInfoDisplayLogic {
@@ -63,26 +67,61 @@ class WeatherInfoViewController: UIViewController, WeatherInfoDisplayLogic {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        doSomething()
         
-        label.text = router?.dataStore?.placemark?.locality
+        configure()
+        self.interactor?.doRequestDarkSkyWeather()
     }
     
     // MARK: Do something
     
-    var weatherPresentationDelegate: WeatherPresentationLogic?
-    @IBOutlet weak var label: UILabel!
+    private let disposeBag = DisposeBag()
     
-
-    //@IBOutlet weak var nameTextField: UITextField!
+    public let weatherSectionModels = BehaviorRelay<[WeatherSectionModel]>(value: [])
     
-    func doSomething() {
-        let request = WeatherInfo.Something.Request()
-        interactor?.doSomething(request: request)
-    }
+    @IBOutlet weak var tv: UITableView!
     
-    func displaySomething(viewModel: WeatherInfo.Something.ViewModel) {
-        //nameTextField.text = viewModel.name
+    func displayDrawWeather(viewModel: WeatherInfo.Info.ViewModel) {
+        weatherSectionModels.accept(viewModel.sectionModels)
     }
 }
 
+extension WeatherInfoViewController {
+    
+    private func configure() {
+        configureUI()
+        configureRx()
+    }
+    
+    private func configureUI() {
+        
+    }
+    
+    private func configureRx() {
+        let ds = RxTableViewSectionedReloadDataSource<WeatherSectionModel>(configureCell: {(_, tv, indexPath, item) -> UITableViewCell in
+            
+            switch item.type {
+            case .currently:
+                let cell = tv.dequeueReusableCell(withIdentifier: "WeatherCurrentlyCell", for: indexPath) as! WeatherCurrentlyCell
+                if let placemark = self.router?.dataStore?.placemark, let model = item.object as? DarkSkyWeatherModel {
+                    cell.configure(weatherModel: model, placemark: placemark)
+                }
+                return cell
+            case .daily:
+                let cell = tv.dequeueReusableCell(withIdentifier: "WeatherDailyCell", for: indexPath) as! WeatherDailyCell
+                if let model = item.object as? WeatherData {
+                    cell.configure(weatherModel: model)
+                }
+                return cell
+            case .description:
+                let cell = tv.dequeueReusableCell(withIdentifier: "WeatherDescriptionCell", for: indexPath) as! WeatherDescriptionCell
+                
+                if let model = item.object as? WeatherDescription {
+                    cell.configure(model: model)
+                }
+                return cell
+            }
+        })
+        
+        weatherSectionModels.bind(to: tv.rx.items(dataSource: ds)).disposed(by: self.disposeBag)
+    }
+}

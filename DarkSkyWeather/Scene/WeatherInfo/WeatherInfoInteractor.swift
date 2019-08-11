@@ -11,10 +11,12 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 import MapKit
 
 protocol WeatherInfoBusinessLogic {
-    func doSomething(request: WeatherInfo.Something.Request)
+    func doRequestDarkSkyWeather()
 }
 
 protocol WeatherInfoDataStore {
@@ -24,18 +26,33 @@ protocol WeatherInfoDataStore {
 
 class WeatherInfoInteractor: WeatherInfoBusinessLogic, WeatherInfoDataStore {
     var presenter: WeatherInfoPresentationLogic?
-    var worker: WeatherInfoWorker?
+    var worker = WeatherInfoWorker()
     var pageIndex: Int = 0
     var placemark: MKPlacemark? = nil
     
+    let disposeBag = DisposeBag()
+    
     // MARK: Do something
     
-    func doSomething(request: WeatherInfo.Something.Request) {
-        worker = WeatherInfoWorker()
-        worker?.doSomeWork()
+    func doRequestDarkSkyWeather() {
         
-        let response = WeatherInfo.Something.Response()
-        presenter?.presentSomething(response: response)
+        if let placemark = placemark {
+            worker.requestDarkSkyWeather(apiKey: KakaoPayString.ApiKey.secretKey, coordinate: placemark.coordinate)
+                .filter{$0.code == .code200}
+                .subscribe(onSuccess: { (code, json) in
+                    
+                    let model = DarkSkyWeatherModel(data: json)
+                    
+                    print(placemark.locality ?? "")
+                    print(placemark.administrativeArea ?? "")
+                    print(model.latitude)
+                    print(model.longitude)
+                    
+                    let response = WeatherInfo.Info.Response(weatherModel: model)
+                    self.presenter?.presentDrawWeather(response: response)
+                })
+                .disposed(by: disposeBag)
+        }
     }
 }
 

@@ -7,7 +7,7 @@ target 'DarkSkyWeather' do
 
   pod 'RxSwift'
   pod 'RxCocoa'
-
+  pod 'RxDataSources'
   # Pods for DarkSkyWeather
 
   target 'DarkSkyWeatherTests' do

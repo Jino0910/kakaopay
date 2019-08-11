@@ -62,23 +62,6 @@ class WeatherInteractor: WeatherBusinessLogic, WeatherDataStore, PlaceProtocol, 
     
         let response = Weather.Info.Response(currentPlacemark: currentPlacemark.value, savedPlacemarks: savedPlacemarks.value, selectedIndex: self.selectedIndex())
         self.presenter?.presentDrawDarkSkyWeathers(response: response)
-//        if let apiKey = Bundle.main.infoDictionary?["DarkSkySecretKey"] as? String {
-//            worker.requestDarkSkyWeather(apiKey: apiKey, coordinate: request.placeMark.coordinate)
-//                .filter{$0.code == .code200}
-//                .subscribe(onSuccess: { (code, json) in
-//
-//                    let model = DarkSkyWeatherModel(data: json)
-//
-//                    print(request.keyword)
-//                    print(request.placeMark.locality ?? "")
-//                    print(model.latitude)
-//                    print(model.longitude)
-//
-//                    let response = Weather.Info.Response(weatherModel: model, keyword: request.keyword)
-//                    self.presenter?.presentDarkSkyWeather(response: response)
-//                })
-//                .disposed(by: disposeBag)
-//        }
     }
     
     // 장소추가

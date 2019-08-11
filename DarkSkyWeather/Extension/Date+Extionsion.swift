@@ -17,6 +17,13 @@ extension Date {
     func addedBy(byAdding: Calendar.Component, value: Int) -> Date {
         return Calendar.current.date(byAdding: byAdding, value: value, to: self)!
     }
+    
+    // 일 1 ~ 토 7
+    func dateToWeekday() -> Int? {
+        let cal = Calendar(identifier: .gregorian)
+        let comps = cal.dateComponents([.weekday], from: self)
+        return comps.weekday
+    }
 }
 
 extension DateFormatter {
