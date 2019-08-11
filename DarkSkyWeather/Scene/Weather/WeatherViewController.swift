@@ -169,14 +169,6 @@ extension WeatherViewController {
 
 extension WeatherViewController {
     
-    private func doDarkSkyWeather(placeMark: MKPlacemark) {
-//        let request = Weather.Info.Request(placeMark: placeMark, keyword: placeMark.name ?? "")
-//        self.interactor?.doDarkSkyWeather(request: request)
-    }
-}
-
-extension WeatherViewController {
-    
     // 검색한 정보
     func selectedPlace(mkMapItem: MKMapItem) {
         self.interactor?.doSavePlace(mkMapItem: mkMapItem)
@@ -210,10 +202,5 @@ extension WeatherViewController: UIPageViewControllerDelegate {
                 self.interactor?.doSaveSelectedPlace(index: index)
             }
         }
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-//        guard completed else { return }
-//        print(pageViewController.viewControllers!.first!.view.tag)
     }
 }

@@ -47,17 +47,6 @@ class WeatherDailyCell: UITableViewCell {
             self.temperatureMinLabel.text = "\(Int(round(temperatureMin)))°"
         }
         
-        
-        //        weatherModel.hourly.weathers.forEach { (data) in
-        
-        //            let v = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 80))
-        //            v.backgroundColor = .red
-        //            v.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        //            v.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        //
-        //            self.hourlyStackView.addArrangedSubview(v)
-        //        }
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
